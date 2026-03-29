@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.NoArgsConstructor;
 import jakarta.persistence.*;
+import java.util.Date;
 
 @Entity
 @Getter
@@ -16,19 +17,18 @@ public class Visualizacion {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idVisualizacion;
 
-    private String fechaVisualizacion;
+    @Column(nullable = false)
+    private Date fechaVisualizacion;
+    @Column(nullable = false)
     private int idCapitulo;
+    @Column(nullable = false)
     private int idTemporada;
 
     @ManyToOne
-    @JoinColumn(name = "serie_id")
+    @JoinColumn(name = "serie_id", nullable = false)
     private Serie serie;
 
-    public Float calcularPrecioVisualizacion(Serie s) {
-        return 0.0f;
-    }
-
-    public Capitulo encontrarCapituloTemporadaenSerie(Serie s, int idCapitulo, int idTemporada) {
+    public Capitulo encontrarCapituloTemporadaenSerie(Serie s, int numCapitulo, int numTemporada) {
         return null;
     }
 }

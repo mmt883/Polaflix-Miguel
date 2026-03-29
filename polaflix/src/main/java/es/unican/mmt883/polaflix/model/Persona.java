@@ -17,7 +17,9 @@ public class Persona {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idPersona;
     
+    @Column(nullable = false)
     private String nombre;
-    private String fechaNacimiento;
-    private String dni;
+    @Column(nullable = false)
+    private String primerApellido;
+    private String segundoApellido;
 }

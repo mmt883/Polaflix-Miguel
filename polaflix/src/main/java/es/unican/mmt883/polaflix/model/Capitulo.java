@@ -17,15 +17,16 @@ public class Capitulo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idCapitulo;
     
+    @Column(nullable = false)
     private String nombreCapitulo;
+    @Column(nullable = false)
     private int numeroCapitulo;
+    @Column(nullable = false)
     private String descripcion;
+    @Column(nullable = false)
     private String enlace;
 
     @ManyToOne
-    @JoinColumn(name = "temporada_id")
+    @JoinColumn(name = "temporada_id", nullable = false)
     private Temporada temporada;
-
-    @Enumerated(EnumType.STRING)
-    private EstadoVisualizacion estado;
 }

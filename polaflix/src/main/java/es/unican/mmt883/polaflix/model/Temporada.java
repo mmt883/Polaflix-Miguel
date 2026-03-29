@@ -19,12 +19,15 @@ public class Temporada {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idTemporada;
     
+    @Column(nullable = false)
     private String nombreTemporada;
+    @Column(nullable = false)
     private int numeroTemporada;
+    @Column(nullable = false)
     private String descripcion;
 
     @ManyToOne
-    @JoinColumn(name = "serie_id")
+    @JoinColumn(name = "serie_id", nullable = false)
     private Serie serie;
 
     @OneToMany(mappedBy = "temporada", cascade = CascadeType.ALL)

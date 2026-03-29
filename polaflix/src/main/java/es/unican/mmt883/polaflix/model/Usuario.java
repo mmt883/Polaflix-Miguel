@@ -19,11 +19,15 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idUsuario;
     
+    @Column(nullable = false)
     private String nombreUsuario;
+    @Column(nullable = false)
     private String contraseña;
+    @Column(nullable = false)
     private String cuentaBancaria;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private TipoSuscripcion tipo;
 
     @OneToMany
@@ -35,21 +39,24 @@ public class Usuario {
     @OneToMany
     private List<Serie> seriesEmpezadas = new ArrayList<>();
 
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "usuario")
     private List<Factura> facturas = new ArrayList<Factura>();
 
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+    private List<RegistroSerieUsuario> registro = new ArrayList<>();
 
-    public void seleccionarSerie(int serieID) {
+
+    public void seleccionarSerie(Serie s) {
     }
 
-    public void agregarSerieAPendiente(int serieID) {
+    public void agregarSerieAPendiente(Serie s) {
     }
 
     public Factura comprobarFacturaActual() {
         return null;
     }
 
-    public List<Factura> comprobarFacturasHistoricas() {
+    public List<Factura> marcarCapituloComoVisto(Capitulo c) {
         return new ArrayList<>();
     }
 }

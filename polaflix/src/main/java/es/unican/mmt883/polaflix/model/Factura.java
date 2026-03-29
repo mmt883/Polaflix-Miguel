@@ -19,11 +19,13 @@ public class Factura {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idFactura;
     
+    @Column(nullable = false)
     private String mes;
+    @Column(nullable = false)
     private Float total;
 
     @ManyToOne
-    @JoinColumn(name = "usuario_id")
+    @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
 
     @OneToMany(cascade = CascadeType.ALL)

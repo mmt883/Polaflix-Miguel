@@ -19,22 +19,25 @@ public class Serie {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idSerie;
     
+    @Column(nullable = false)
     private String nombreSerie;
+    @Column(nullable = false)
     private String descripcion;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private CategoriaSerie categoria;
 
     @OneToMany(mappedBy = "serie", cascade = CascadeType.ALL)
     private List<Temporada> temporadas = new ArrayList<>();
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     private List<Persona> actores = new ArrayList<>();
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     private List<Persona> creador = new ArrayList<>();
 
-    public Capitulo encontrarCapituloenTemporada(int idCapitulo, int idTemporada) {
+    public Capitulo encontrarCapituloenTemporada(int numCapitulo, int numTemporada) {
         return null;
     }
 }
