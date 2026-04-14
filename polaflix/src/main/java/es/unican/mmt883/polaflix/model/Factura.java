@@ -1,6 +1,7 @@
 package es.unican.mmt883.polaflix.model;
 
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.NoArgsConstructor;
@@ -13,11 +14,12 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(of = "idFactura")
 public class Factura {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idFactura;
+    private Long idFactura;
     
     @Column(nullable = false)
     private String mes;
@@ -31,4 +33,23 @@ public class Factura {
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "factura_id") // Relación unidireccional o composición
     private List<Visualizacion> visualizaciones = new ArrayList<>();
+
+    @PrePersist
+    @PreUpdate
+    public void actualizarTotal() {
+        this.total = calcularTotal();
+    }
+
+    public Float calcularTotal() {
+        if (usuario != null && usuario.getTipo() == TipoSuscripcion.CUOTAFIJA) {
+            return 20.0f;
+        }
+        float total = 0.0f;
+        for (Visualizacion visualizacion : visualizaciones) {
+            if (visualizacion != null) {
+                total += visualizacion.getPrecioCobrado();
+            }
+        }
+        return total;
+    }
 }

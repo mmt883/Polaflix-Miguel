@@ -1,6 +1,7 @@
 package es.unican.mmt883.polaflix.model;
 
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.NoArgsConstructor;
@@ -11,11 +12,12 @@ import jakarta.persistence.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(of = "idCapitulo")
 public class Capitulo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idCapitulo;
+    private Long idCapitulo;
     
     @Column(nullable = false)
     private String nombreCapitulo;
@@ -29,4 +31,6 @@ public class Capitulo {
     @ManyToOne
     @JoinColumn(name = "temporada_id", nullable = false)
     private Temporada temporada;
+
+    
 }
