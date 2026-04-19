@@ -9,9 +9,8 @@ import jakarta.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Date;
-import java.time.LocalDate;
-import java.time.format.TextStyle;
-import java.util.Locale;
+import java.util.List;
+import java.util.ArrayList;
 
 @Entity
 @Getter
@@ -46,10 +45,10 @@ public class Usuario {
     private Set<Serie> seriesEmpezadas = new HashSet<>();
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
-    private Set<Factura> facturas = new HashSet<>();
+    private List<Factura> facturas = new ArrayList<>();
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
-    private Set<RegistroSerieUsuario> registros = new HashSet<>();
+    private List<RegistroSerieUsuario> registros = new ArrayList<>();
 
     @ManyToMany
     private Set<Capitulo> capitulosVistos = new HashSet<>();
@@ -62,7 +61,11 @@ public class Usuario {
     }
 
     public Factura comprobarFacturaActual() {
-        String mesActual = LocalDate.now().getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault());
+        // Formato "YYYY-MM", ej. "2026-04"
+        String mesActual = String.format("%04d-%02d", 
+            java.time.LocalDate.now().getYear(), 
+            java.time.LocalDate.now().getMonthValue());
+            
         for (Factura f : facturas) {
             if (f.getMes().equals(mesActual)) {
                 return f;
@@ -73,28 +76,36 @@ public class Usuario {
 
     public boolean marcarCapituloComoVisto(Capitulo c) {
         capitulosVistos.add(c);
+        Serie serie = c.getTemporada().getSerie();
+        float precio = calcularPrecioCobrado(serie);
         Factura facturaActual = comprobarFacturaActual();
         if (facturaActual != null) {
             Visualizacion v = new Visualizacion();
             v.setFechaVisualizacion(new Date());
             v.setNumCapitulo(c.getNumeroCapitulo());
             v.setNumTemporada(c.getTemporada().getNumeroTemporada());
-            v.setSerie(c.getTemporada().getSerie());
+            v.setSerie(serie);
+            v.setPrecioCobrado(precio);
             facturaActual.getVisualizaciones().add(v);
+            facturaActual.setTotal(facturaActual.getTotal() + precio);
         } else {
             Factura nuevaFactura = new Factura();
-            String mesActual = LocalDate.now().getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault());
+            String mesActual = String.format("%04d-%02d", 
+                java.time.LocalDate.now().getYear(), 
+                java.time.LocalDate.now().getMonthValue());
             nuevaFactura.setMes(mesActual);
             nuevaFactura.setUsuario(this);
             Visualizacion v = new Visualizacion();
             v.setFechaVisualizacion(new Date());
             v.setNumCapitulo(c.getNumeroCapitulo());
             v.setNumTemporada(c.getTemporada().getNumeroTemporada());
-            v.setSerie(c.getTemporada().getSerie());
+            v.setSerie(serie);
+            v.setPrecioCobrado(precio);
             nuevaFactura.getVisualizaciones().add(v);
+            nuevaFactura.setTotal(precio);
             facturas.add(nuevaFactura);
         }
-        Serie serie = c.getTemporada().getSerie();
+        
         RegistroSerieUsuario reg = null;
         for (RegistroSerieUsuario r : registros) {
             if (r.getSerie().equals(serie)) {
@@ -110,5 +121,22 @@ public class Usuario {
         }
         reg.setUltimoCapituloVisto(c);
         return true;
+    }
+
+    public float calcularPrecioCobrado(Serie serie) {
+        if (this.tipo == TipoSuscripcion.CUOTAFIJA) {
+            return 0.0f; // Cuota fija mensual, visualizaciones gratis
+        } else {
+            switch (serie.getCategoria()) {
+                case ESTANDAR:
+                    return 0.50f;
+                case SILVER:
+                    return 0.75f;
+                case GOLD:
+                    return 1.50f;
+                default:
+                    return 0.50f;
+            }
+        }
     }
 }

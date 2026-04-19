@@ -12,8 +12,8 @@ import java.util.Date;
 public class VisualizacionDTO {
     private Long idVisualizacion;
     private Date fechaVisualizacion;
-    private int numCapitulo;
+    private CapituloDTO capitulo;
     private int numTemporada;
     private float precioCobrado;
-    private Long serieId;
+    private SerieResumenDTO serie;
 }

@@ -1,12 +1,17 @@
 package es.unican.mmt883.polaflix.controller;
 
 import es.unican.mmt883.polaflix.model.Usuario;
+import es.unican.mmt883.polaflix.model.Capitulo;
 import es.unican.mmt883.polaflix.model.Factura;
 import es.unican.mmt883.polaflix.model.Serie;
 import es.unican.mmt883.polaflix.dto.UsuarioDTO;
+import es.unican.mmt883.polaflix.dto.UsuarioResumenDTO;
+import es.unican.mmt883.polaflix.dto.VisualizacionDTO;
 import es.unican.mmt883.polaflix.model.RegistroSerieUsuario;
-import es.unican.mmt883.polaflix.dto.RegistroSerieUsuarioDTO;
+import es.unican.mmt883.polaflix.dto.CapituloDTO;
 import es.unican.mmt883.polaflix.dto.FacturaDTO;
+import es.unican.mmt883.polaflix.dto.RegistroSerieUsuarioDTO;
+import es.unican.mmt883.polaflix.dto.SerieResumenDTO;
 import es.unican.mmt883.polaflix.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -87,7 +92,7 @@ public class UsuarioController {
     @GetMapping("/{id}/facturas")
     public ResponseEntity<Set<FacturaDTO>> getFacturas(@PathVariable Long id) {
         try {
-            Set<Factura> facturas = usuarioService.getFacturas(id);
+            List<Factura> facturas = usuarioService.getFacturas(id);
             Set<FacturaDTO> dtos = facturas.stream()
                     .map(this::facturaToDTO)
                     .collect(Collectors.toSet());
@@ -117,7 +122,7 @@ public class UsuarioController {
     @GetMapping("/{id}/registros")
     public ResponseEntity<List<RegistroSerieUsuarioDTO>> getRegistros(@PathVariable Long id) {
         try {
-            Set<RegistroSerieUsuario> registros = usuarioService.getRegistros(id);
+            List<RegistroSerieUsuario> registros = usuarioService.getRegistros(id);
             List<RegistroSerieUsuarioDTO> dtos = registros.stream()
                     .map(this::registroToDTO)
                     .collect(Collectors.toList());
@@ -153,20 +158,44 @@ public class UsuarioController {
     }
 
     private RegistroSerieUsuarioDTO registroToDTO(RegistroSerieUsuario registro) {
+        UsuarioResumenDTO usuarioResumen = new UsuarioResumenDTO(
+                registro.getUsuario().getIdUsuario(),
+                registro.getUsuario().getNombreUsuario(),
+                registro.getUsuario().getTipo()
+        );
+        Set<Integer> temporadasIds = registro.getSerie().getTemporadas().keySet();
+        SerieResumenDTO serieResumen = new SerieResumenDTO(
+                registro.getSerie().getIdSerie(),
+                registro.getSerie().getNombreSerie(),
+                temporadasIds,
+                registro.getSerie().getCategoria()
+        );
         return new RegistroSerieUsuarioDTO(
                 registro.getId(),
                 registro.getUltimoCapituloVisto().getTemporada().getNumeroTemporada(),
                 registro.getUltimoCapituloVisto().getNumeroCapitulo(),
-                registro.getUsuario().getIdUsuario(),
-                registro.getSerie().getIdSerie()
+                usuarioResumen,
+                serieResumen
         );
     }
 
     private FacturaDTO facturaToDTO(Factura factura) {
-        Set<Long> visualizaciones = factura.getVisualizaciones().stream()
-                .map(v -> v.getIdVisualizacion())
+        Set<VisualizacionDTO> visualizaciones = factura.getVisualizaciones().stream()
+                .map(v -> {
+                    Capitulo capitulo = v.getSerie().encontrarCapituloenTemporada(v.getNumCapitulo(), v.getNumTemporada());
+                    CapituloDTO capituloDTO = new CapituloDTO(capitulo.getNombreCapitulo(), capitulo.getDescripcion(), capitulo.getNumeroCapitulo(), capitulo.getEnlace());
+                    Set<Integer> temporadasIds = v.getSerie().getTemporadas().keySet();
+                    SerieResumenDTO serieResumen = new SerieResumenDTO(
+                            v.getSerie().getIdSerie(),
+                            v.getSerie().getNombreSerie(),
+                            temporadasIds,
+                            v.getSerie().getCategoria()
+                    );
+                    return new VisualizacionDTO(v.getIdVisualizacion(), v.getFechaVisualizacion(), capituloDTO, v.getNumTemporada(), v.getPrecioCobrado(), serieResumen);
+                })
                 .collect(Collectors.toSet());
+        UsuarioResumenDTO usuarioDTO = new UsuarioResumenDTO(factura.getUsuario().getIdUsuario(), factura.getUsuario().getNombreUsuario(), factura.getUsuario().getTipo());
         return new FacturaDTO(factura.getIdFactura(), factura.getMes(), factura.getTotal(),
-                factura.getUsuario().getIdUsuario(), visualizaciones);
+                usuarioDTO, visualizaciones);
     }
 }

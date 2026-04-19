@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import es.unican.mmt883.polaflix.model.CategoriaSerie;
+import es.unican.mmt883.polaflix.model.Persona;
 
 import java.util.Set;
 import java.util.Map;
@@ -16,7 +17,7 @@ public class SerieDTO {
     private String nombreSerie;
     private String descripcion;
     private CategoriaSerie categoria;
-    private Set<Long> actoresIds;
-    private Set<Long> creadoresIds;
+    private Set<Persona> actores;
+    private Set<Persona> creadores;
     private Map<Integer, TemporadaDTO> temporadas;
 }

@@ -160,7 +160,7 @@ public class DatabaseInitializer implements CommandLineRunner {
 		usuarioFijo.getSeriesEmpezadas().add(serieEstándar);
 
 		Factura facturaFija = new Factura();
-		facturaFija.setMes("2026-03");
+		facturaFija.setMes("2026-04");
 		facturaFija.setUsuario(usuarioFijo);
 
 		Temporada temporadaEstandar = serieEstándar.getTemporadas().get(1);
@@ -194,7 +194,7 @@ public class DatabaseInitializer implements CommandLineRunner {
 		usuarioPago.getSeriesEmpezadas().add(serieGold);
 
 		Factura facturaPago = new Factura();
-		facturaPago.setMes("2026-03");
+		facturaPago.setMes("2026-04");
 		facturaPago.setUsuario(usuarioPago);
 
 		Temporada temporadaSilver = serieSilver.getTemporadas().get(1);

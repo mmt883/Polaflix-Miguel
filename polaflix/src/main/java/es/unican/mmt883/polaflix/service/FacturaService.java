@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class FacturaService {
@@ -43,7 +42,7 @@ public class FacturaService {
     }
 
     @Transactional(readOnly = true)
-    public Set<Visualizacion> getVisualizaciones(Long facturaId) {
+    public List<Visualizacion> getVisualizaciones(Long facturaId) {
         Factura factura = facturaRepository.findById(facturaId).orElseThrow(() -> new RuntimeException("Factura not found"));
         return factura.getVisualizaciones();
     }
@@ -55,6 +54,9 @@ public class FacturaService {
         if (visualizacion.getSerie() != null && visualizacion.getSerie().getIdSerie() != null) {
             Serie serie = serieRepository.findById(visualizacion.getSerie().getIdSerie()).orElseThrow(() -> new RuntimeException("Serie not found"));
             visualizacion.setSerie(serie);
+            float precio = factura.getUsuario().calcularPrecioCobrado(serie);
+            visualizacion.setPrecioCobrado(precio);
+            factura.setTotal(factura.getTotal() + precio);
         }
         factura.getVisualizaciones().add(visualizacion);
         return facturaRepository.save(factura);
@@ -68,6 +70,7 @@ public class FacturaService {
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("Visualizacion not found in factura"));
         factura.getVisualizaciones().remove(toRemove);
+        factura.setTotal(factura.getTotal() - toRemove.getPrecioCobrado());
         return facturaRepository.save(factura);
     }
 }

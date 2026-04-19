@@ -1,8 +1,11 @@
 package es.unican.mmt883.polaflix.controller;
 
+import es.unican.mmt883.polaflix.model.Capitulo;
 import es.unican.mmt883.polaflix.model.Factura;
 import es.unican.mmt883.polaflix.model.Visualizacion;
+import es.unican.mmt883.polaflix.dto.CapituloDTO;
 import es.unican.mmt883.polaflix.dto.FacturaDTO;
+import es.unican.mmt883.polaflix.dto.SerieResumenDTO;
 import es.unican.mmt883.polaflix.dto.UsuarioResumenDTO;
 import es.unican.mmt883.polaflix.dto.VisualizacionDTO;
 import es.unican.mmt883.polaflix.service.FacturaService;
@@ -65,7 +68,7 @@ public class FacturaController {
     @GetMapping("/{id}/visualizaciones")
     public ResponseEntity<Set<VisualizacionDTO>> getVisualizaciones(@PathVariable Long id) {
         try {
-            Set<Visualizacion> visualizaciones = facturaService.getVisualizaciones(id);
+            List<Visualizacion> visualizaciones = facturaService.getVisualizaciones(id);
             Set<VisualizacionDTO> dtos = visualizaciones.stream()
                     .map(this::visualizacionToDTO)
                     .collect(Collectors.toSet());
@@ -96,8 +99,8 @@ public class FacturaController {
     }
 
     private FacturaDTO toDTO(Factura factura) {
-        Set<Long> visualizaciones = factura.getVisualizaciones().stream()
-                .map(v -> v.getIdVisualizacion())
+        Set<VisualizacionDTO> visualizaciones = factura.getVisualizaciones().stream()
+                .map(this::visualizacionToDTO)
                 .collect(Collectors.toSet());
         UsuarioResumenDTO usuarioResumen = new UsuarioResumenDTO(
                 factura.getUsuario().getIdUsuario(),
@@ -108,8 +111,16 @@ public class FacturaController {
     }
 
     private VisualizacionDTO visualizacionToDTO(Visualizacion v) {
+        Capitulo capitulo = v.getSerie().encontrarCapituloenTemporada(v.getNumCapitulo(), v.getNumTemporada());
+        CapituloDTO capituloDTO = new CapituloDTO(capitulo.getNombreCapitulo(), capitulo.getDescripcion(), capitulo.getNumeroCapitulo(), capitulo.getEnlace());
+        Set<Integer> temporadasIds = v.getSerie().getTemporadas().keySet();
+        SerieResumenDTO serieResumen = new SerieResumenDTO(
+                v.getSerie().getIdSerie(),
+                v.getSerie().getNombreSerie(),
+                temporadasIds, v.getSerie().getCategoria()
+        );
         return new VisualizacionDTO(v.getIdVisualizacion(), v.getFechaVisualizacion(),
-                v.getNumCapitulo(), v.getNumTemporada(), v.getPrecioCobrado(),
-                v.getSerie().getIdSerie());
+                capituloDTO, v.getNumTemporada(), v.getPrecioCobrado(),
+                serieResumen);
     }
 }

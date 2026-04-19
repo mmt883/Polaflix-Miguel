@@ -11,6 +11,6 @@ public class RegistroSerieUsuarioDTO {
     private Long id;
     private int ultimoCapituloNumTemporada;
     private int ultimoCapituloNumCapitulo;
-    private Long usuarioId;
-    private Long serieId;
+    private UsuarioResumenDTO usuario;
+    private SerieResumenDTO serie;
 }

@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class UsuarioService {
@@ -65,13 +64,13 @@ public class UsuarioService {
     }
 
     @Transactional(readOnly = true)
-    public Set<Factura> getFacturas(Long usuarioId) {
+    public List<Factura> getFacturas(Long usuarioId) {
         Usuario usuario = usuarioRepository.findById(usuarioId).orElseThrow(() -> new RuntimeException("Usuario not found"));
         return usuario.getFacturas();
     }
 
     @Transactional(readOnly = true)
-    public Set<RegistroSerieUsuario> getRegistros(Long usuarioId) {
+    public List<RegistroSerieUsuario> getRegistros(Long usuarioId) {
         Usuario usuario = usuarioRepository.findById(usuarioId).orElseThrow(() -> new RuntimeException("Usuario not found"));
         return usuario.getRegistros();
     }

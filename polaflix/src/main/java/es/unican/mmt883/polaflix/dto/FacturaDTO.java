@@ -14,5 +14,5 @@ public class FacturaDTO {
     private String mes;
     private Float total;
     private UsuarioResumenDTO usuario;
-    private Set<Long> visualizacionesIds;
+    private Set<VisualizacionDTO> visualizaciones;
 }
