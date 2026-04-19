@@ -61,7 +61,7 @@ public class DatabaseInitializer implements CommandLineRunner {
 		serie1.setDescripcion("Serie documental sobre astronomía.");
 		serie1.setCategoria(CategoriaSerie.ESTANDAR);
 		serie1.getActores().add(actor);
-		serie1.getCreador().add(creador);
+		serie1.getCreadores().add(creador);
 		serie1.getTemporadas().put(temporada1.getNumeroTemporada(), temporada1);
 		temporada1.setSerie(serie1);
 
@@ -93,7 +93,7 @@ public class DatabaseInitializer implements CommandLineRunner {
 		serie2.setDescripcion("Una trama de hacking y conspiración.");
 		serie2.setCategoria(CategoriaSerie.SILVER);
 		serie2.getActores().add(actor2);
-		serie2.getCreador().add(creador2);
+		serie2.getCreadores().add(creador2);
 		serie2.getTemporadas().put(temporada2.getNumeroTemporada(), temporada2);
 		temporada2.setSerie(serie2);
 
@@ -125,7 +125,7 @@ public class DatabaseInitializer implements CommandLineRunner {
 		serie3.setDescripcion("Una saga fantástica llena de intriga y traición.");
 		serie3.setCategoria(CategoriaSerie.GOLD);
 		serie3.getActores().add(actor3);
-		serie3.getCreador().add(creador3);
+		serie3.getCreadores().add(creador3);
 		serie3.getTemporadas().put(temporada3.getNumeroTemporada(), temporada3);
 		temporada3.setSerie(serie3);
 
@@ -180,7 +180,7 @@ public class DatabaseInitializer implements CommandLineRunner {
 		registroFijo.setUsuario(usuarioFijo);
 		registroFijo.setSerie(serieEstándar);
 		registroFijo.setUltimoCapituloVisto(capituloEstandar);
-		usuarioFijo.getRegistro().add(registroFijo);
+		usuarioFijo.getRegistros().add(registroFijo);
 
 		usuarioRepository.save(usuarioFijo);
 		facturaRepository.save(facturaFija);
@@ -225,7 +225,7 @@ public class DatabaseInitializer implements CommandLineRunner {
 		registroPago.setUsuario(usuarioPago);
 		registroPago.setSerie(serieGold);
 		registroPago.setUltimoCapituloVisto(capituloGold);
-		usuarioPago.getRegistro().add(registroPago);
+		usuarioPago.getRegistros().add(registroPago);
 
 		usuarioRepository.save(usuarioPago);
 		facturaRepository.save(facturaPago);

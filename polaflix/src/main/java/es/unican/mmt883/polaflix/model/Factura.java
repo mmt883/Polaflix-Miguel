@@ -6,8 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.NoArgsConstructor;
 import jakarta.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
+import java.util.HashSet;
 
 @Entity
 @Getter
@@ -31,8 +31,8 @@ public class Factura {
     private Usuario usuario;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "factura_id") // Relación unidireccional o composición
-    private List<Visualizacion> visualizaciones = new ArrayList<>();
+    @JoinColumn(name = "factura_id")
+    private Set<Visualizacion> visualizaciones = new HashSet<>();
 
     @PrePersist
     @PreUpdate

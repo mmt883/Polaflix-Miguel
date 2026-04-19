@@ -3761,17 +3761,17 @@
 										"$ref": "AAAAAAGczuHrBtqn3Yo="
 									},
 									"font": "Arial;13;0",
-									"left": 1416,
+									"left": 1400,
 									"top": 339,
-									"width": 54.55810546875,
+									"width": 65.39990234375,
 									"height": 13,
-									"alpha": 0.7229790615727937,
-									"distance": 22.67156809750927,
+									"alpha": 1.1902893749700203,
+									"distance": 16.15549442140351,
 									"hostEdge": {
 										"$ref": "AAAAAAGczuHrBtqr6uo="
 									},
 									"edgePosition": 1,
-									"text": "+creador"
+									"text": "+creadores"
 								},
 								{
 									"_type": "EdgeLabelView",
@@ -5919,12 +5919,12 @@
 										"$ref": "AAAAAAGdG2PnKKfHBWw="
 									},
 									"font": "Arial;13;0",
-									"left": 309,
-									"top": 282,
+									"left": 296,
+									"top": 281,
 									"width": 50.22900390625,
 									"height": 13,
-									"alpha": -0.5235987755982988,
-									"distance": 30,
+									"alpha": -0.36717391972889146,
+									"distance": 41.78516483155236,
 									"hostEdge": {
 										"$ref": "AAAAAAGdG2PnKafJgDU="
 									},
@@ -7063,7 +7063,8 @@
 										"_parent": {
 											"$ref": "AAAAAAGczsukfPM0aTY="
 										},
-										"name": "numeroTemporada"
+										"name": "numeroTemporada",
+										"type": ""
 									}
 								]
 							},
@@ -7115,7 +7116,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGcrycLa0G4UA8="
 							},
-							"name": "creador",
+							"name": "creadores",
 							"end1": {
 								"_type": "UMLAssociationEnd",
 								"_id": "AAAAAAGczuHrBtqoIEw=",
@@ -7387,7 +7388,8 @@
 										"_parent": {
 											"$ref": "AAAAAAGczsbPWdmPorY="
 										},
-										"name": "numeroCapitulo"
+										"name": "numeroCapitulo",
+										"type": ""
 									}
 								]
 							},

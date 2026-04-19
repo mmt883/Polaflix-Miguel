@@ -15,7 +15,6 @@ public class RegistroSerieUsuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Relación que apunta al último capítulo que ha visto el usuario de una serie
     @ManyToOne
     @JoinColumn(name = "capitulo_id", nullable = false)
     private Capitulo ultimoCapituloVisto;

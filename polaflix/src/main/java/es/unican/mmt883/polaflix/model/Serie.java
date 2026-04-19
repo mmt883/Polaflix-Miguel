@@ -6,10 +6,10 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.NoArgsConstructor;
 import jakarta.persistence.*;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.HashSet;
 
 @Entity
 @Getter
@@ -37,12 +37,16 @@ public class Serie {
     private Map<Integer, Temporada> temporadas = new HashMap<>();
 
     @ManyToMany(cascade = CascadeType.PERSIST)
-    private List<Persona> actores = new ArrayList<>();
+    private Set<Persona> actores = new HashSet<>();
 
     @ManyToMany(cascade = CascadeType.PERSIST)
-    private List<Persona> creador = new ArrayList<>();
+    private Set<Persona> creadores = new HashSet<>();
 
     public Capitulo encontrarCapituloenTemporada(int numCapitulo, int numTemporada) {
+        Temporada temporada = temporadas.get(numTemporada);
+        if (temporada != null) {
+            return temporada.getCapitulos().get(numCapitulo);
+        }
         return null;
     }
 }

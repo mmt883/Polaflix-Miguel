@@ -55,6 +55,10 @@ public class Visualizacion {
     }
 
     public Capitulo encontrarCapituloTemporadaenSerie(Serie s, int idCapitulo, int idTemporada) {
+        if (s != null) {
+            // Delegamos la búsqueda a la propia Serie, que ya tiene sus mapas configurados
+            return s.encontrarCapituloenTemporada(numCapitulo, numTemporada);
+        }
         return null;
     }
 }
