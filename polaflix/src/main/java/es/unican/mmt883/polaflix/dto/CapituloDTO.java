@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CapituloDTO {
+    private Long idCapitulo;
     private String titulo;
     private String descripcion;
     private int numCapitulo;

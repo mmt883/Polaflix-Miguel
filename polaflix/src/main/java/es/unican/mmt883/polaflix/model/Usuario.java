@@ -21,7 +21,7 @@ import java.util.ArrayList;
 public class Usuario {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long idUsuario;
     
     @Column(nullable = false)
@@ -52,9 +52,6 @@ public class Usuario {
 
     @ManyToMany
     private Set<Capitulo> capitulosVistos = new HashSet<>();
-
-    public void seleccionarSerie(Serie s) {
-    }
 
     public void agregarSerieAPendiente(Serie s) {
         seriesPendientes.add(s);

@@ -2,6 +2,7 @@ package es.unican.mmt883.polaflix.controller;
 
 import es.unican.mmt883.polaflix.model.Capitulo;
 import es.unican.mmt883.polaflix.model.Factura;
+import es.unican.mmt883.polaflix.model.Temporada;
 import es.unican.mmt883.polaflix.model.Visualizacion;
 import es.unican.mmt883.polaflix.dto.CapituloDTO;
 import es.unican.mmt883.polaflix.dto.FacturaDTO;
@@ -13,10 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/facturas")
@@ -112,8 +113,10 @@ public class FacturaController {
 
     private VisualizacionDTO visualizacionToDTO(Visualizacion v) {
         Capitulo capitulo = v.getSerie().encontrarCapituloenTemporada(v.getNumCapitulo(), v.getNumTemporada());
-        CapituloDTO capituloDTO = new CapituloDTO(capitulo.getNombreCapitulo(), capitulo.getDescripcion(), capitulo.getNumeroCapitulo(), capitulo.getEnlace());
-        Set<Integer> temporadasIds = v.getSerie().getTemporadas().keySet();
+        CapituloDTO capituloDTO = new CapituloDTO(capitulo.getIdCapitulo(),capitulo.getNombreCapitulo(), capitulo.getDescripcion(), capitulo.getNumeroCapitulo(), capitulo.getEnlace());
+        Set<Integer> temporadasIds = v.getSerie().getTemporadas().stream()
+                .map(Temporada::getNumeroTemporada)
+                .collect(Collectors.toSet());
         SerieResumenDTO serieResumen = new SerieResumenDTO(
                 v.getSerie().getIdSerie(),
                 v.getSerie().getNombreSerie(),

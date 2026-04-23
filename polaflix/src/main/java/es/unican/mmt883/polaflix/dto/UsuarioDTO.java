@@ -14,8 +14,9 @@ public class UsuarioDTO {
     private Long idUsuario;
     private String nombreUsuario;
     private TipoSuscripcion tipo;
-    private Set<Long> seriesPendientesIds;
-    private Set<Long> seriesTerminadasIds;
-    private Set<Long> seriesEmpezadasIds;
-    private Set<Long> facturasIds;
+    private Set<SerieResumenDTO> seriesPendientes;
+    private Set<SerieResumenDTO> seriesTerminadas;
+    private Set<SerieResumenDTO> seriesEmpezadas;
+    private Set<FacturaDTO> facturas;
+    private Set<RegistroSerieUsuarioDTO> registrosSeries;
 }

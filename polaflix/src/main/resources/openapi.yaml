@@ -1,0 +1,723 @@
+openapi: 3.0.3
+info:
+  title: Polaflix API
+  description: API para la aplicación Polaflix
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+    description: Local server
+paths:
+  /series:
+    get:
+      summary: Get all series
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SerieDTO'
+    post:
+      summary: Create a new serie
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Serie'
+      responses:
+        '201':
+          description: Serie created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SerieDTO'
+  /series/{id}:
+    get:
+      summary: Get serie by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SerieDTO'
+        '404':
+          description: Serie not found
+    put:
+      summary: Update serie
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Serie'
+      responses:
+        '200':
+          description: Serie updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SerieDTO'
+        '404':
+          description: Serie not found
+    delete:
+      summary: Delete serie
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: Serie deleted
+        '404':
+          description: Serie not found
+  /series/{serieId}/temporadas:
+    post:
+      summary: Add temporada to serie
+      parameters:
+        - name: serieId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Temporada'
+      responses:
+        '200':
+          description: Temporada added
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SerieDTO'
+        '404':
+          description: Serie not found
+  /series/{serieId}/temporadas/{numTemporada}/capitulos:
+    post:
+      summary: Add capitulo to temporada
+      parameters:
+        - name: serieId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: numTemporada
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Capitulo'
+      responses:
+        '200':
+          description: Capitulo added
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CapituloDTO'
+        '404':
+          description: Temporada not found
+    get:
+      summary: Get capitulo
+      parameters:
+        - name: serieId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: numTemporada
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: numCapitulo
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CapituloDTO'
+        '404':
+          description: Capitulo not found
+  /usuarios:
+    get:
+      summary: Get all usuarios
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UsuarioDTO'
+    post:
+      summary: Create a new usuario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Usuario'
+      responses:
+        '201':
+          description: Usuario created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsuarioDTO'
+  /usuarios/{id}:
+    get:
+      summary: Get usuario by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsuarioDTO'
+        '404':
+          description: Usuario not found
+    put:
+      summary: Update usuario
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Usuario'
+      responses:
+        '200':
+          description: Usuario updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsuarioDTO'
+        '404':
+          description: Usuario not found
+    delete:
+      summary: Delete usuario
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: Usuario deleted
+        '404':
+          description: Usuario not found
+  /usuarios/{usuarioId}/series-pendientes/{serieId}:
+    post:
+      summary: Add serie to pendientes
+      parameters:
+        - name: usuarioId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: serieId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Serie added to pendientes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsuarioDTO'
+        '404':
+          description: Usuario or Serie not found
+    delete:
+      summary: Remove serie from pendientes
+      parameters:
+        - name: usuarioId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: serieId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Serie removed from pendientes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsuarioDTO'
+        '404':
+          description: Usuario or Serie not found
+  /usuarios/{id}/facturas:
+    get:
+      summary: Get facturas for usuario
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FacturaDTO'
+        '404':
+          description: Usuario not found
+  /facturas:
+    get:
+      summary: Get all facturas
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FacturaDTO'
+    post:
+      summary: Create a new factura
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Factura'
+      responses:
+        '201':
+          description: Factura created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FacturaDTO'
+  /facturas/{id}:
+    get:
+      summary: Get factura by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FacturaDTO'
+        '404':
+          description: Factura not found
+    put:
+      summary: Update factura
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Factura'
+      responses:
+        '200':
+          description: Factura updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FacturaDTO'
+        '404':
+          description: Factura not found
+    delete:
+      summary: Delete factura
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: Factura deleted
+        '404':
+          description: Factura not found
+components:
+  schemas:
+    Serie:
+      type: object
+      properties:
+        idSerie:
+          type: integer
+          format: int64
+        nombreSerie:
+          type: string
+        descripcion:
+          type: string
+        categoria:
+          $ref: '#/components/schemas/CategoriaSerie'
+        actores:
+          type: array
+          items:
+            $ref: '#/components/schemas/Persona'
+        creadores:
+          type: array
+          items:
+            $ref: '#/components/schemas/Persona'
+        temporadas:
+          type: array
+          items:
+            $ref: '#/components/schemas/Temporada'
+    SerieDTO:
+      type: object
+      properties:
+        idSerie:
+          type: integer
+          format: int64
+        nombreSerie:
+          type: string
+        descripcion:
+          type: string
+        categoria:
+          $ref: '#/components/schemas/CategoriaSerie'
+        actores:
+          type: array
+          items:
+            $ref: '#/components/schemas/Persona'
+        creadores:
+          type: array
+          items:
+            $ref: '#/components/schemas/Persona'
+        temporadas:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/TemporadaDTO'
+    Temporada:
+      type: object
+      properties:
+        idTemporada:
+          type: integer
+          format: int64
+        nombreTemporada:
+          type: string
+        numeroTemporada:
+          type: integer
+        descripcion:
+          type: string
+        capitulos:
+          type: array
+          items:
+            $ref: '#/components/schemas/Capitulo'
+    TemporadaDTO:
+      type: object
+      properties:
+        numeroTemporada:
+          type: integer
+        capitulosTitulos:
+          type: object
+          additionalProperties:
+            type: string
+    Capitulo:
+      type: object
+      properties:
+        idCapitulo:
+          type: integer
+          format: int64
+        nombreCapitulo:
+          type: string
+        numeroCapitulo:
+          type: integer
+        descripcion:
+          type: string
+        enlace:
+          type: string
+    CapituloDTO:
+      type: object
+      properties:
+        nombreCapitulo:
+          type: string
+        descripcion:
+          type: string
+        numeroCapitulo:
+          type: integer
+        enlace:
+          type: string
+    Usuario:
+      type: object
+      properties:
+        idUsuario:
+          type: integer
+          format: int64
+        nombreUsuario:
+          type: string
+        contraseña:
+          type: string
+        cuentaBancaria:
+          type: string
+        tipo:
+          $ref: '#/components/schemas/TipoSuscripcion'
+        seriesPendientes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Serie'
+        seriesTerminadas:
+          type: array
+          items:
+            $ref: '#/components/schemas/Serie'
+        seriesEmpezadas:
+          type: array
+          items:
+            $ref: '#/components/schemas/Serie'
+        facturas:
+          type: array
+          items:
+            $ref: '#/components/schemas/Factura'
+        registros:
+          type: array
+          items:
+            $ref: '#/components/schemas/RegistroSerieUsuario'
+        capitulosVistos:
+          type: array
+          items:
+            $ref: '#/components/schemas/Capitulo'
+    UsuarioDTO:
+      type: object
+      properties:
+        idUsuario:
+          type: integer
+          format: int64
+        nombreUsuario:
+          type: string
+        tipo:
+          $ref: '#/components/schemas/TipoSuscripcion'
+        seriesPendientes:
+          type: array
+          items:
+            $ref: '#/components/schemas/SerieResumenDTO'
+        seriesTerminadas:
+          type: array
+          items:
+            $ref: '#/components/schemas/SerieResumenDTO'
+        seriesEmpezadas:
+          type: array
+          items:
+            $ref: '#/components/schemas/SerieResumenDTO'
+        facturas:
+          type: array
+          items:
+            $ref: '#/components/schemas/FacturaDTO'
+        registros:
+          type: array
+          items:
+            $ref: '#/components/schemas/RegistroSerieUsuarioDTO'
+    UsuarioResumenDTO:
+      type: object
+      properties:
+        idUsuario:
+          type: integer
+          format: int64
+        nombreUsuario:
+          type: string
+        tipo:
+          $ref: '#/components/schemas/TipoSuscripcion'
+    Factura:
+      type: object
+      properties:
+        idFactura:
+          type: integer
+          format: int64
+        mes:
+          type: string
+        total:
+          type: number
+          format: float
+        usuario:
+          $ref: '#/components/schemas/Usuario'
+        visualizaciones:
+          type: array
+          items:
+            $ref: '#/components/schemas/Visualizacion'
+    FacturaDTO:
+      type: object
+      properties:
+        idFactura:
+          type: integer
+          format: int64
+        mes:
+          type: string
+        total:
+          type: number
+          format: float
+        usuario:
+          $ref: '#/components/schemas/UsuarioResumenDTO'
+        visualizaciones:
+          type: array
+          items:
+            $ref: '#/components/schemas/VisualizacionDTO'
+    Visualizacion:
+      type: object
+      properties:
+        idVisualizacion:
+          type: integer
+          format: int64
+        fechaVisualizacion:
+          type: string
+          format: date-time
+        numCapitulo:
+          type: integer
+        numTemporada:
+          type: integer
+        precioCobrado:
+          type: number
+          format: float
+        serie:
+          $ref: '#/components/schemas/Serie'
+    VisualizacionDTO:
+      type: object
+      properties:
+        idVisualizacion:
+          type: integer
+          format: int64
+        fechaVisualizacion:
+          type: string
+          format: date-time
+        capitulo:
+          $ref: '#/components/schemas/CapituloDTO'
+        numTemporada:
+          type: integer
+        precioCobrado:
+          type: number
+          format: float
+        serie:
+          $ref: '#/components/schemas/SerieResumenDTO'
+    RegistroSerieUsuario:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        usuario:
+          $ref: '#/components/schemas/Usuario'
+        serie:
+          $ref: '#/components/schemas/Serie'
+        ultimoCapituloVisto:
+          $ref: '#/components/schemas/Capitulo'
+    RegistroSerieUsuarioDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        usuario:
+          $ref: '#/components/schemas/UsuarioResumenDTO'
+        serie:
+          $ref: '#/components/schemas/SerieResumenDTO'
+        ultimoCapituloVisto:
+          $ref: '#/components/schemas/CapituloDTO'
+    SerieResumenDTO:
+      type: object
+      properties:
+        idSerie:
+          type: integer
+          format: int64
+        nombreSerie:
+          type: string
+        temporadasIds:
+          type: array
+          items:
+            type: integer
+        categoria:
+          $ref: '#/components/schemas/CategoriaSerie'
+    Persona:
+      type: object
+      properties:
+        idPersona:
+          type: integer
+          format: int64
+        nombre:
+          type: string
+        primerApellido:
+          type: string
+        segundoApellido:
+          type: string
+    CategoriaSerie:
+      type: string
+      enum:
+        - ESTANDAR
+        - SILVER
+        - GOLD
+    TipoSuscripcion:
+      type: string
+      enum:
+        - CUOTAFIJA
+        - PAGOPORVISUALIZACION

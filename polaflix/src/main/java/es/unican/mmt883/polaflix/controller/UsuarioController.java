@@ -3,7 +3,7 @@ package es.unican.mmt883.polaflix.controller;
 import es.unican.mmt883.polaflix.model.Usuario;
 import es.unican.mmt883.polaflix.model.Capitulo;
 import es.unican.mmt883.polaflix.model.Factura;
-import es.unican.mmt883.polaflix.model.Serie;
+import es.unican.mmt883.polaflix.model.Temporada;
 import es.unican.mmt883.polaflix.dto.UsuarioDTO;
 import es.unican.mmt883.polaflix.dto.UsuarioResumenDTO;
 import es.unican.mmt883.polaflix.dto.VisualizacionDTO;
@@ -17,10 +17,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.List;
+
 
 @RestController
 @RequestMapping("/usuarios")
@@ -103,20 +103,29 @@ public class UsuarioController {
     }
 
     private UsuarioDTO toDTO(Usuario usuario) {
-        Set<Long> pendientes = usuario.getSeriesPendientes().stream()
-                .map(Serie::getIdSerie)
+        Set<SerieResumenDTO> pendientes = usuario.getSeriesPendientes().stream()
+                .map(s -> new SerieResumenDTO(s.getIdSerie(), s.getNombreSerie(),
+                        s.getTemporadas().stream().map(Temporada::getNumeroTemporada).collect(Collectors.toSet()),
+                        s.getCategoria()))
                 .collect(Collectors.toSet());
-        Set<Long> terminadas = usuario.getSeriesTerminadas().stream()
-                .map(Serie::getIdSerie)
+        Set<SerieResumenDTO> terminadas = usuario.getSeriesTerminadas().stream()
+                .map(s -> new SerieResumenDTO(s.getIdSerie(), s.getNombreSerie(),
+                        s.getTemporadas().stream().map(Temporada::getNumeroTemporada).collect(Collectors.toSet()),
+                        s.getCategoria()))
                 .collect(Collectors.toSet());
-        Set<Long> empezadas = usuario.getSeriesEmpezadas().stream()
-                .map(Serie::getIdSerie)
+        Set<SerieResumenDTO> empezadas = usuario.getSeriesEmpezadas().stream()
+                .map(s -> new SerieResumenDTO(s.getIdSerie(), s.getNombreSerie(),
+                        s.getTemporadas().stream().map(Temporada::getNumeroTemporada).collect(Collectors.toSet()),
+                        s.getCategoria()))
                 .collect(Collectors.toSet());
-        Set<Long> facturas = usuario.getFacturas().stream()
-                .map(Factura::getIdFactura)
+        Set<FacturaDTO> facturas = usuario.getFacturas().stream()
+                .map(this::facturaToDTO)
+                .collect(Collectors.toSet());
+        Set<RegistroSerieUsuarioDTO> registros = usuario.getRegistros().stream()
+                .map(this::registroToDTO)
                 .collect(Collectors.toSet());
         return new UsuarioDTO(usuario.getIdUsuario(), usuario.getNombreUsuario(), usuario.getTipo(),
-                pendientes, terminadas, empezadas, facturas);
+                pendientes, terminadas, empezadas, facturas, registros);
     }
 
     @GetMapping("/{id}/registros")
@@ -158,33 +167,23 @@ public class UsuarioController {
     }
 
     private RegistroSerieUsuarioDTO registroToDTO(RegistroSerieUsuario registro) {
-        UsuarioResumenDTO usuarioResumen = new UsuarioResumenDTO(
-                registro.getUsuario().getIdUsuario(),
-                registro.getUsuario().getNombreUsuario(),
-                registro.getUsuario().getTipo()
-        );
-        Set<Integer> temporadasIds = registro.getSerie().getTemporadas().keySet();
-        SerieResumenDTO serieResumen = new SerieResumenDTO(
-                registro.getSerie().getIdSerie(),
-                registro.getSerie().getNombreSerie(),
-                temporadasIds,
-                registro.getSerie().getCategoria()
-        );
-        return new RegistroSerieUsuarioDTO(
-                registro.getId(),
-                registro.getUltimoCapituloVisto().getTemporada().getNumeroTemporada(),
-                registro.getUltimoCapituloVisto().getNumeroCapitulo(),
-                usuarioResumen,
-                serieResumen
-        );
+        Capitulo ultimoCapitulo = registro.getUltimoCapituloVisto();
+        CapituloDTO ultimoCapituloDTO = new CapituloDTO(ultimoCapitulo.getIdCapitulo(), ultimoCapitulo.getNombreCapitulo(), ultimoCapitulo.getDescripcion(), ultimoCapitulo.getNumeroCapitulo(), ultimoCapitulo.getEnlace());
+        UsuarioResumenDTO usuarioDTO = new UsuarioResumenDTO(registro.getUsuario().getIdUsuario(), registro.getUsuario().getNombreUsuario(), registro.getUsuario().getTipo());
+        SerieResumenDTO serieDTO = new SerieResumenDTO(registro.getSerie().getIdSerie(), registro.getSerie().getNombreSerie(),
+                registro.getSerie().getTemporadas().stream().map(Temporada::getNumeroTemporada).collect(Collectors.toSet()),
+                registro.getSerie().getCategoria());
+        return new RegistroSerieUsuarioDTO(registro.getIdRegistro(), ultimoCapituloDTO, usuarioDTO, serieDTO);
     }
 
     private FacturaDTO facturaToDTO(Factura factura) {
         Set<VisualizacionDTO> visualizaciones = factura.getVisualizaciones().stream()
                 .map(v -> {
                     Capitulo capitulo = v.getSerie().encontrarCapituloenTemporada(v.getNumCapitulo(), v.getNumTemporada());
-                    CapituloDTO capituloDTO = new CapituloDTO(capitulo.getNombreCapitulo(), capitulo.getDescripcion(), capitulo.getNumeroCapitulo(), capitulo.getEnlace());
-                    Set<Integer> temporadasIds = v.getSerie().getTemporadas().keySet();
+                    CapituloDTO capituloDTO = new CapituloDTO(capitulo.getIdCapitulo(), capitulo.getNombreCapitulo(), capitulo.getDescripcion(), capitulo.getNumeroCapitulo(), capitulo.getEnlace());
+                    Set<Integer> temporadasIds = v.getSerie().getTemporadas().stream()
+                            .map(Temporada::getNumeroTemporada)
+                            .collect(Collectors.toSet());
                     SerieResumenDTO serieResumen = new SerieResumenDTO(
                             v.getSerie().getIdSerie(),
                             v.getSerie().getNombreSerie(),

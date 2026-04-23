@@ -8,9 +8,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RegistroSerieUsuarioDTO {
-    private Long id;
-    private int ultimoCapituloNumTemporada;
-    private int ultimoCapituloNumCapitulo;
+    private Long idRegistro;
+    private CapituloDTO ultimoCapitulo;
     private UsuarioResumenDTO usuario;
     private SerieResumenDTO serie;
 }

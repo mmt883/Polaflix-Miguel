@@ -16,7 +16,7 @@ import jakarta.persistence.*;
 public class Persona {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long idPersona;
     
     @Column(nullable = false)

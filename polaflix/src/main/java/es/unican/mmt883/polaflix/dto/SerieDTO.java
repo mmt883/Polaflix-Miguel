@@ -7,7 +7,6 @@ import es.unican.mmt883.polaflix.model.CategoriaSerie;
 import es.unican.mmt883.polaflix.model.Persona;
 
 import java.util.Set;
-import java.util.Map;
 
 @Data
 @NoArgsConstructor
@@ -19,5 +18,5 @@ public class SerieDTO {
     private CategoriaSerie categoria;
     private Set<Persona> actores;
     private Set<Persona> creadores;
-    private Map<Integer, TemporadaDTO> temporadas;
+    private Set<TemporadaDTO> temporadas;
 }

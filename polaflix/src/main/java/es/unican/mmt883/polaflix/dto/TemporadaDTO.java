@@ -4,12 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Map;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class TemporadaDTO {
+    private Long idTemporada;
     private int numeroTemporada;
-    private Map<Integer, String> capitulosTitulos; // numCapitulo -> titulo, para simplificar
+    private Set<CapituloDTO> capitulos;
 }

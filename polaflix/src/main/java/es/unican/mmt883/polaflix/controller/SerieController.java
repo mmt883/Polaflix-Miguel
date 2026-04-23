@@ -12,11 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.List;
 
 @RestController
 @RequestMapping("/series")
@@ -69,7 +67,7 @@ public class SerieController {
     public ResponseEntity<CapituloDTO> getCapitulo(@PathVariable Long serieId, @PathVariable int numTemporada, @PathVariable int numCapitulo) {
         Capitulo capitulo = serieService.getCapitulo(serieId, numTemporada, numCapitulo);
         if (capitulo != null) {
-            CapituloDTO dto = new CapituloDTO(capitulo.getNombreCapitulo(), capitulo.getDescripcion(), capitulo.getNumeroCapitulo(), capitulo.getEnlace());
+            CapituloDTO dto = new CapituloDTO(capitulo.getIdCapitulo(), capitulo.getNombreCapitulo(), capitulo.getDescripcion(), capitulo.getNumeroCapitulo(), capitulo.getEnlace());
             return ResponseEntity.ok(dto);
         }
         return ResponseEntity.notFound().build();
@@ -89,9 +87,9 @@ public class SerieController {
     public ResponseEntity<CapituloDTO> addCapituloToTemporada(@PathVariable Long serieId, @PathVariable int numTemporada, @RequestBody Capitulo capitulo) {
         try {
             Serie serie = serieService.addCapituloToTemporada(serieId, numTemporada, capitulo);
-            Temporada temporada = serie.getTemporadas().get(numTemporada);
-            Capitulo capituloAgregado = temporada.getCapitulos().get(capitulo.getNumeroCapitulo());
-            CapituloDTO dto = new CapituloDTO(capituloAgregado.getNombreCapitulo(), capituloAgregado.getDescripcion(), capituloAgregado.getNumeroCapitulo(), capituloAgregado.getEnlace());
+            Temporada temporada = serie.getTemporadaByNumero(numTemporada);
+            Capitulo capituloAgregado = temporada.getCapituloByNumero(capitulo.getNumeroCapitulo());
+            CapituloDTO dto = new CapituloDTO(capituloAgregado.getIdCapitulo(), capituloAgregado.getNombreCapitulo(), capituloAgregado.getDescripcion(), capituloAgregado.getNumeroCapitulo(), capituloAgregado.getEnlace());
             return ResponseEntity.ok(dto);
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
@@ -105,21 +103,18 @@ public class SerieController {
         Set<Persona> creadores = serie.getCreadores().stream()
                 .map(c -> new Persona(c.getIdPersona(), c.getNombre(), c.getPrimerApellido(), c.getSegundoApellido()))
                 .collect(Collectors.toSet());
-        Map<Integer, TemporadaDTO> temporadas = serie.getTemporadas().entrySet().stream()
-                .collect(Collectors.toMap(
-                        Map.Entry::getKey,
-                        e -> temporadaToDTO(e.getValue())
-                ));
+        Set<TemporadaDTO> temporadas = serie.getTemporadas().stream()
+                .map(this::temporadaToDTO)
+                .collect(Collectors.toSet());
+
         return new SerieDTO(serie.getIdSerie(), serie.getNombreSerie(), serie.getDescripcion(),
                 serie.getCategoria(), actores, creadores, temporadas);
     }
 
     private TemporadaDTO temporadaToDTO(Temporada temporada) {
-        Map<Integer, String> capitulosTitulos = temporada.getCapitulos().entrySet().stream()
-                .collect(Collectors.toMap(
-                        Map.Entry::getKey,
-                        e -> e.getValue().getNombreCapitulo()
-                ));
-        return new TemporadaDTO(temporada.getNumeroTemporada(), capitulosTitulos);
+        Set<CapituloDTO> capitulos = temporada.getCapitulos().stream()
+                .map(c -> new CapituloDTO(c.getIdCapitulo(), c.getNombreCapitulo(), c.getDescripcion(), c.getNumeroCapitulo(), c.getEnlace()))
+                .collect(Collectors.toSet());
+        return new TemporadaDTO(temporada.getIdTemporada(),temporada.getNumeroTemporada(), capitulos);
     }
 }

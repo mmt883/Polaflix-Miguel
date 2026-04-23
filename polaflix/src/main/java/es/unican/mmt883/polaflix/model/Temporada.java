@@ -6,8 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.NoArgsConstructor;
 import jakarta.persistence.*;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -18,7 +18,7 @@ import java.util.Map;
 public class Temporada {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long idTemporada;
     
     @Column(nullable = false)
@@ -33,6 +33,12 @@ public class Temporada {
     private Serie serie;
 
     @OneToMany(mappedBy = "temporada", cascade = CascadeType.ALL)
-    @MapKeyJoinColumn(name = "numeroCapitulo")
-    private Map<Integer, Capitulo> capitulos = new HashMap<>();
+    private List<Capitulo> capitulos = new ArrayList<>();
+
+    public Capitulo getCapituloByNumero(int numeroCapitulo) {
+        return capitulos.stream()
+                .filter(c -> c.getNumeroCapitulo() == numeroCapitulo)
+                .findFirst()
+                .orElse(null);
+    }
 }

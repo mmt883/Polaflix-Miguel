@@ -16,7 +16,7 @@ import java.util.Date;
 @EqualsAndHashCode(of = "idVisualizacion")
 public class Visualizacion {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long idVisualizacion;
 
     @Column(nullable = false)
