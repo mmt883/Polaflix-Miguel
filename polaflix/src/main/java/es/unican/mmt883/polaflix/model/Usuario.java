@@ -26,8 +26,10 @@ public class Usuario {
     
     @Column(nullable = false)
     private String nombreUsuario;
+    
     @Column(nullable = false)
     private String contraseña;
+    
     @Column(nullable = false)
     private String cuentaBancaria;
 
@@ -137,3 +139,5 @@ public class Usuario {
         }
     }
 }
+
+

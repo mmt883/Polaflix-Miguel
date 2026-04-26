@@ -25,6 +25,7 @@ public class Serie {
     
     @Column(nullable = false)
     private String nombreSerie;
+    
     @Column(nullable = false)
     private String descripcion;
 
@@ -56,3 +57,5 @@ public class Serie {
         return null;
     }
 }
+
+

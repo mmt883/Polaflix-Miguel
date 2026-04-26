@@ -248,3 +248,5 @@ public class DatabaseInitializer implements CommandLineRunner {
         usuarioRepository.save(usuarioPedro); facturaRepository.save(facturaPedro);
     }
 }
+
+

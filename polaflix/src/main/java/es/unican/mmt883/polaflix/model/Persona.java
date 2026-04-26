@@ -21,7 +21,11 @@ public class Persona {
     
     @Column(nullable = false)
     private String nombre;
+    
     @Column(nullable = false)
     private String primerApellido;
+    
     private String segundoApellido;
 }
+
+

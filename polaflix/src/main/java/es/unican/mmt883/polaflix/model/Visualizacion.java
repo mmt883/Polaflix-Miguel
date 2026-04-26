@@ -24,8 +24,10 @@ public class Visualizacion {
 
     @Column(nullable = false)
     private int numCapitulo;
+    
     @Column(nullable = false)
     private int numTemporada;
+    
     @Column(nullable = false)
     private float precioCobrado;
 
@@ -61,3 +63,5 @@ public class Visualizacion {
         return null;
     }
 }
+
+

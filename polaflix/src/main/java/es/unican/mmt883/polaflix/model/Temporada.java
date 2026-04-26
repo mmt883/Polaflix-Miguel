@@ -23,8 +23,10 @@ public class Temporada {
     
     @Column(nullable = false)
     private String nombreTemporada;
+    
     @Column(nullable = false)
     private int numeroTemporada;
+    
     @Column(nullable = false)
     private String descripcion;
 
@@ -42,3 +44,5 @@ public class Temporada {
                 .orElse(null);
     }
 }
+
+

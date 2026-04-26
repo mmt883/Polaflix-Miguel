@@ -4,3 +4,5 @@ public enum TipoSuscripcion {
     PAGOPORVISUALIZACION,
     CUOTAFIJA
 }
+
+

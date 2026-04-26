@@ -23,6 +23,7 @@ public class Factura {
     
     @Column(nullable = false)
     private String mes;
+    
     @Column(nullable = false)
     private Float total;
 
@@ -53,3 +54,5 @@ public class Factura {
         return total;
     }
 }
+
+

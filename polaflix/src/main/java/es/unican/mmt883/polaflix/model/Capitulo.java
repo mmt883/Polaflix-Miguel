@@ -21,10 +21,13 @@ public class Capitulo {
     
     @Column(nullable = false)
     private String nombreCapitulo;
+    
     @Column(nullable = false)
     private int numeroCapitulo;
+    
     @Column(nullable = false)
     private String descripcion;
+    
     @Column(nullable = false)
     private String enlace;
 
@@ -34,3 +37,5 @@ public class Capitulo {
 
     
 }
+
+
