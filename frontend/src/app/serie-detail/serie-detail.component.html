@@ -1,0 +1,35 @@
+<section class="section-card" *ngIf="!loading && serie">
+  <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; flex-wrap: wrap;">
+    <div>
+      <h2 class="page-title">{{ serie.nombreSerie }}</h2>
+      <p class="card-text">{{ serie.descripcion }}</p>
+      <div class="chip">Categoría: {{ serie.categoria }}</div>
+    </div>
+    <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+      <span class="chip">Temporadas: {{ serie.temporadas?.length || 0 }}</span>
+    </div>
+  </div>
+
+  <div class="content-grid" *ngIf="serie.temporadas?.length; else noSeasons">
+    <article class="card" *ngFor="let temporada of serie.temporadas">
+      <div class="card-body">
+        <h3 class="card-title">Temporada {{ temporada.numeroTemporada }} - {{ temporada.nombreTemporada }}</h3>
+        <p class="card-meta">{{ temporada.descripcion || 'Descubre todos los capítulos disponibles.' }}</p>
+        <p class="card-text">Capítulos: {{ temporada.capitulos?.length || 0 }}</p>
+      </div>
+      <div class="card-body">
+        <button class="primary-button" (click)="openSeason(temporada.numeroTemporada)">Abrir temporada</button>
+      </div>
+    </article>
+  </div>
+
+  <ng-template #noSeasons>
+    <div class="alert">Esta serie no tiene temporadas disponibles por el momento.</div>
+  </ng-template>
+
+  <div class="alert" *ngIf="error" style="background: rgba(248, 113, 113, 0.15); border-color: rgba(248, 113, 113, 0.25); color: #fecaca;">
+    {{ error }}
+  </div>
+</section>
+
+<div class="loading" *ngIf="loading">Cargando detalles de la serie...</div>

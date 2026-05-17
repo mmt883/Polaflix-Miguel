@@ -14,6 +14,7 @@ import es.unican.mmt883.polaflix.service.SerieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 import java.util.Set;
@@ -25,6 +26,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/series")
 @Tag(name = "Catálogo de Series", description = "Operaciones CRUD sobre las series, temporadas, capítulos y elenco")
 public class SerieController {
@@ -180,8 +182,8 @@ public class SerieController {
     public ResponseEntity<CapituloDTO> addCapituloToTemporada(@PathVariable Long serieId, @PathVariable int numTemporada, @Valid @RequestBody CapituloDTO capituloDTO) {
         try {
             Capitulo capitulo = new Capitulo();
-            capitulo.setNombreCapitulo(capituloDTO.getTitulo());
-            capitulo.setNumeroCapitulo(capituloDTO.getNumCapitulo());
+            capitulo.setNombreCapitulo(capituloDTO.getNombreCapitulo());
+            capitulo.setNumeroCapitulo(capituloDTO.getNumeroCapitulo());
             capitulo.setDescripcion(capituloDTO.getDescripcion());
             capitulo.setEnlace(capituloDTO.getEnlace());
             Serie serie = serieService.addCapituloToTemporada(serieId, numTemporada, capitulo);

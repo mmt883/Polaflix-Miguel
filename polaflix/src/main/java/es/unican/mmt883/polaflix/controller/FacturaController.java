@@ -148,7 +148,7 @@ public class FacturaController {
             serie.setIdSerie(visualizacionDTO.getSerie().getIdSerie());
             Visualizacion visualizacion = new Visualizacion();
             visualizacion.setFechaVisualizacion(visualizacionDTO.getFechaVisualizacion());
-            visualizacion.setNumCapitulo(visualizacionDTO.getCapitulo().getNumCapitulo());
+            visualizacion.setNumCapitulo(visualizacionDTO.getCapitulo().getNumeroCapitulo());
             visualizacion.setNumTemporada(visualizacionDTO.getNumTemporada());
             visualizacion.setPrecioCobrado(visualizacionDTO.getPrecioCobrado());
             visualizacion.setSerie(serie);

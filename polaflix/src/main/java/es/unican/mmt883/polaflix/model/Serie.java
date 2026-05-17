@@ -7,7 +7,9 @@ import lombok.Setter;
 import lombok.NoArgsConstructor;
 import jakarta.persistence.*;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.HashSet;
 
@@ -55,6 +57,26 @@ public class Serie {
             return temporada.getCapituloByNumero(numCapitulo);
         }
         return null;
+    }
+
+    public Temporada getUltimaTemporada() {
+        return temporadas.stream()
+                .max(Comparator.comparingInt(Temporada::getNumeroTemporada))
+                .orElse(null);
+    }
+
+    public boolean esUltimoCapitulo(Capitulo capitulo) {
+        Temporada ultimaTemporada = getUltimaTemporada();
+        if (ultimaTemporada == null || capitulo == null || capitulo.getTemporada() == null) {
+            return false;
+        }
+        if (!ultimaTemporada.equals(capitulo.getTemporada())) {
+            return false;
+        }
+        return ultimaTemporada.getCapitulos().stream()
+                .max(Comparator.comparingInt(Capitulo::getNumeroCapitulo))
+                .map(c -> c.equals(capitulo))
+                .orElse(false);
     }
 }
 

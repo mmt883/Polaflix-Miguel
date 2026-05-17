@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import es.unican.mmt883.polaflix.model.TipoSuscripcion;
+import es.unican.mmt883.polaflix.dto.CapituloDTO;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -44,6 +45,9 @@ public class UsuarioDTO {
 
     @JsonView(Vistas.UsuarioCompleto.class)
     private Set<SerieDTO> seriesEmpezadas;
+
+    @JsonView(Vistas.UsuarioCompleto.class)
+    private Set<CapituloDTO> capitulosVistos;
 
     @JsonView(Vistas.UsuarioCompleto.class)
     @JsonIgnoreProperties("usuario")

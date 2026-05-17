@@ -1,0 +1,21 @@
+<div class="app-shell">
+  <header>
+    <div class="brand">
+      <div class="brand-mark"><span>P</span></div>
+      <div class="brand-title">
+        <h1>Polaflix</h1>
+        <p>Tu plataforma de series inteligente.</p>
+      </div>
+    </div>
+    <div class="nav-links">
+      <span class="chip">Bienvenido, {{ userService.getUsername() }}</span>
+      <a class="nav-button" routerLink="/">Inicio</a>
+      <a class="nav-button" (click)="showNotImplemented()"> Agregar serie</a>
+      <a class="nav-button" (click)="showNotImplemented()"> Ver cargos</a>
+    </div>
+  </header>
+
+  <main>
+    <router-outlet></router-outlet>
+  </main>
+</div>

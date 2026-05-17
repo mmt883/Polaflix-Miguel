@@ -16,6 +16,7 @@ import es.unican.mmt883.polaflix.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 import java.util.Set;
@@ -28,6 +29,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/usuarios")
 @Tag(name = "Usuarios", description = "Gestión de perfiles de usuario, listas de series y marcadores de lectura")
 public class UsuarioController {
@@ -177,6 +179,9 @@ public class UsuarioController {
         Set<RegistroSerieUsuarioDTO> registros = usuario.getRegistros().stream()
                 .map(this::registroToDTO)
                 .collect(Collectors.toSet());
+        Set<CapituloDTO> capitulosVistos = usuario.getCapitulosVistos().stream()
+                .map(c -> new CapituloDTO(c.getIdCapitulo(), c.getNombreCapitulo(), c.getNumeroCapitulo(), c.getDescripcion(), c.getEnlace()))
+                .collect(Collectors.toSet());
 
         UsuarioDTO dto = new UsuarioDTO();
         dto.setIdUsuario(usuario.getIdUsuario());
@@ -187,6 +192,7 @@ public class UsuarioController {
         dto.setSeriesPendientes(pendientes);
         dto.setSeriesTerminadas(terminadas);
         dto.setSeriesEmpezadas(empezadas);
+        dto.setCapitulosVistos(capitulosVistos);
         dto.setFacturas(facturas);
         dto.setRegistrosSeries(registros);
         return dto;

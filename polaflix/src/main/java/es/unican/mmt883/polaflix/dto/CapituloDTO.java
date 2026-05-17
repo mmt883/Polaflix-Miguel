@@ -19,12 +19,12 @@ public class CapituloDTO {
 
     @JsonView(Vistas.Public.class)
     @NotBlank(message = "El nombre del capítulo no puede estar vacío")
-    private String titulo;
+    private String nombreCapitulo;
 
     @JsonView(Vistas.Public.class)
     @NotNull(message = "El número del capítulo es obligatorio")
     @Min(value = 1, message = "El número del capítulo debe ser mayor que 0")
-    private int numCapitulo;
+    private int numeroCapitulo;
 
     @JsonView(Vistas.Public.class)
     @NotBlank(message = "La descripción del capítulo no puede estar vacía")

@@ -119,6 +119,20 @@ public class Usuario {
             registros.add(reg);
         }
         reg.setUltimoCapituloVisto(c);
+
+        if (!seriesTerminadas.contains(serie) && !seriesEmpezadas.contains(serie)) {
+            seriesPendientes.remove(serie);
+            seriesEmpezadas.add(serie);
+        }
+
+        if (serie.esUltimoCapitulo(c)) {
+            if (seriesEmpezadas.contains(serie)) {
+                seriesEmpezadas.remove(serie);
+            } else {
+                seriesPendientes.remove(serie);
+            }
+            seriesTerminadas.add(serie);
+        }
         return true;
     }
 

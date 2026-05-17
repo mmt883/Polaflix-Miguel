@@ -7,6 +7,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Component
@@ -34,101 +35,201 @@ public class DatabaseInitializer implements CommandLineRunner {
 
     private void feedSeries() {
         // ==========================================
-        // SERIE 1: ESTÁNDAR (1 Temp, 1 Cap)
+        // SERIE 1: Misterios del Cosmos
         // ==========================================
         Persona actor1 = new Persona(); actor1.setNombre("Ana"); actor1.setPrimerApellido("Martinez"); actor1.setSegundoApellido("Lopez");
         Persona creador1 = new Persona(); creador1.setNombre("Carlos"); creador1.setPrimerApellido("Sanchez"); creador1.setSegundoApellido("Ruiz");
         
-        Capitulo s1t1c1 = new Capitulo(); s1t1c1.setNombreCapitulo("Nacimiento de una estrella"); s1t1c1.setNumeroCapitulo(1); s1t1c1.setDescripcion("Cómo se forman las estrellas."); s1t1c1.setEnlace("http://video/s1t1c1");
-        Temporada s1t1 = new Temporada(); s1t1.setNombreTemporada("Estrellas antiguas"); s1t1.setNumeroTemporada(1); s1t1.setDescripcion("Temporada introductoria.");
-        s1t1.getCapitulos().add(s1t1c1); s1t1c1.setTemporada(s1t1);
-        
-        Serie serie1 = new Serie(); serie1.setNombreSerie("Misterios del Cosmos"); serie1.setDescripcion("Serie documental sobre astronomía."); serie1.setCategoria(CategoriaSerie.ESTANDAR);
-        serie1.getActores().add(actor1); serie1.getCreadores().add(creador1);
-        serie1.getTemporadas().add(s1t1); s1t1.setSerie(serie1);
+        Serie serie1 = new Serie();
+        serie1.setNombreSerie("Misterios del Cosmos");
+        serie1.setDescripcion("Serie documental sobre astronomía y exploración del universo.");
+        serie1.setCategoria(CategoriaSerie.ESTANDAR);
+        serie1.getActores().add(actor1);
+        serie1.getCreadores().add(creador1);
+
+        Temporada s1t1 = new Temporada(); s1t1.setNombreTemporada("Estrellas antiguas"); s1t1.setNumeroTemporada(1); s1t1.setDescripcion("Temporada introductoria."); s1t1.setSerie(serie1);
+        Capitulo s1t1c1 = new Capitulo(); s1t1c1.setNombreCapitulo("Nacimiento de una estrella"); s1t1c1.setNumeroCapitulo(1); s1t1c1.setDescripcion("Cómo se forman las estrellas."); s1t1c1.setEnlace("http://video/s1t1c1"); s1t1c1.setTemporada(s1t1); s1t1.getCapitulos().add(s1t1c1);
+        Capitulo s1t1c2 = new Capitulo(); s1t1c2.setNombreCapitulo("Tormenta de polvo"); s1t1c2.setNumeroCapitulo(2); s1t1c2.setDescripcion("Las tormentas estelares."); s1t1c2.setEnlace("http://video/s1t1c2"); s1t1c2.setTemporada(s1t1); s1t1.getCapitulos().add(s1t1c2);
+        Capitulo s1t1c3 = new Capitulo(); s1t1c3.setNombreCapitulo("Viaje lunar"); s1t1c3.setNumeroCapitulo(3); s1t1c3.setDescripcion("Exploración de la luna."); s1t1c3.setEnlace("http://video/s1t1c3"); s1t1c3.setTemporada(s1t1); s1t1.getCapitulos().add(s1t1c3);
+        serie1.getTemporadas().add(s1t1);
+
+        Temporada s1t2 = new Temporada(); s1t2.setNombreTemporada("Galaxias ocultas"); s1t2.setNumeroTemporada(2); s1t2.setDescripcion("Exploración de nuevos mundos."); s1t2.setSerie(serie1);
+        Capitulo s1t2c1 = new Capitulo(); s1t2c1.setNombreCapitulo("Mundos rebeldes"); s1t2c1.setNumeroCapitulo(1); s1t2c1.setDescripcion("Planetas lejanos."); s1t2c1.setEnlace("http://video/s1t2c1"); s1t2c1.setTemporada(s1t2); s1t2.getCapitulos().add(s1t2c1);
+        Capitulo s1t2c2 = new Capitulo(); s1t2c2.setNombreCapitulo("Agujeros negros"); s1t2c2.setNumeroCapitulo(2); s1t2c2.setDescripcion("Misterios cósmicos."); s1t2c2.setEnlace("http://video/s1t2c2"); s1t2c2.setTemporada(s1t2); s1t2.getCapitulos().add(s1t2c2);
+        Capitulo s1t2c3 = new Capitulo(); s1t2c3.setNombreCapitulo("Lentes gravitacionales"); s1t2c3.setNumeroCapitulo(3); s1t2c3.setDescripcion("Fenómenos relativistas."); s1t2c3.setEnlace("http://video/s1t2c3"); s1t2c3.setTemporada(s1t2); s1t2.getCapitulos().add(s1t2c3);
+        serie1.getTemporadas().add(s1t2);
+
+        Temporada s1t3 = new Temporada(); s1t3.setNombreTemporada("Fronteras del universo"); s1t3.setNumeroTemporada(3); s1t3.setDescripcion("Fronteras finales."); s1t3.setSerie(serie1);
+        Capitulo s1t3c1 = new Capitulo(); s1t3c1.setNombreCapitulo("Planetas gemelos"); s1t3c1.setNumeroCapitulo(1); s1t3c1.setDescripcion("Sistemas binarios."); s1t3c1.setEnlace("http://video/s1t3c1"); s1t3c1.setTemporada(s1t3); s1t3.getCapitulos().add(s1t3c1);
+        Capitulo s1t3c2 = new Capitulo(); s1t3c2.setNombreCapitulo("Civilizaciones perdidas"); s1t3c2.setNumeroCapitulo(2); s1t3c2.setDescripcion("Búsqueda de vida extraterrestre."); s1t3c2.setEnlace("http://video/s1t3c2"); s1t3c2.setTemporada(s1t3); s1t3.getCapitulos().add(s1t3c2);
+        Capitulo s1t3c3 = new Capitulo(); s1t3c3.setNombreCapitulo("Horizonte de sucesos"); s1t3c3.setNumeroCapitulo(3); s1t3c3.setDescripcion("El fin del universo."); s1t3c3.setEnlace("http://video/s1t3c3"); s1t3c3.setTemporada(s1t3); s1t3.getCapitulos().add(s1t3c3);
+        serie1.getTemporadas().add(s1t3);
+
+        serieRepository.save(serie1);
 
         // ==========================================
-        // SERIE 2: SILVER (1 Temp, 1 Cap)
+        // SERIE 2: Código Híbrido
         // ==========================================
         Persona actor2 = new Persona(); actor2.setNombre("Laura"); actor2.setPrimerApellido("Gomez"); actor2.setSegundoApellido("Pérez");
         Persona creador2 = new Persona(); creador2.setNombre("Diego"); creador2.setPrimerApellido("Ruiz"); creador2.setSegundoApellido("Ortiz");
         
-        Capitulo s2t1c1 = new Capitulo(); s2t1c1.setNombreCapitulo("Código en la sombra"); s2t1c1.setNumeroCapitulo(1); s2t1c1.setDescripcion("Un thriller tecnológico."); s2t1c1.setEnlace("http://video/s2t1c1");
-        Temporada s2t1 = new Temporada(); s2t1.setNombreTemporada("Primera Temporada"); s2t1.setNumeroTemporada(1); s2t1.setDescripcion("Suspense en la era digital.");
-        s2t1.getCapitulos().add(s2t1c1); s2t1c1.setTemporada(s2t1);
-        
-        Serie serie2 = new Serie(); serie2.setNombreSerie("Código Híbrido"); serie2.setDescripcion("Una trama de hacking y conspiración."); serie2.setCategoria(CategoriaSerie.SILVER);
-        serie2.getActores().add(actor2); serie2.getCreadores().add(creador2);
-        serie2.getTemporadas().add(s2t1); s2t1.setSerie(serie2);
+        Serie serie2 = new Serie();
+        serie2.setNombreSerie("Código Híbrido");
+        serie2.setDescripcion("Thriller tecnológico con secretos en la red.");
+        serie2.setCategoria(CategoriaSerie.SILVER);
+        serie2.getActores().add(actor2);
+        serie2.getCreadores().add(creador2);
+
+        Temporada s2t1 = new Temporada(); s2t1.setNombreTemporada("Primera temporada"); s2t1.setNumeroTemporada(1); s2t1.setDescripcion("Inicio de la conspiración."); s2t1.setSerie(serie2);
+        Capitulo s2t1c1 = new Capitulo(); s2t1c1.setNombreCapitulo("Código en la sombra"); s2t1c1.setNumeroCapitulo(1); s2t1c1.setDescripcion("Un thriller tecnológico."); s2t1c1.setEnlace("http://video/s2t1c1"); s2t1c1.setTemporada(s2t1); s2t1.getCapitulos().add(s2t1c1);
+        Capitulo s2t1c2 = new Capitulo(); s2t1c2.setNombreCapitulo("Perfil falso"); s2t1c2.setNumeroCapitulo(2); s2t1c2.setDescripcion("La identidad es engañosa."); s2t1c2.setEnlace("http://video/s2t1c2"); s2t1c2.setTemporada(s2t1); s2t1.getCapitulos().add(s2t1c2);
+        Capitulo s2t1c3 = new Capitulo(); s2t1c3.setNombreCapitulo("Guía encriptada"); s2t1c3.setNumeroCapitulo(3); s2t1c3.setDescripcion("Mensajes ocultos."); s2t1c3.setEnlace("http://video/s2t1c3"); s2t1c3.setTemporada(s2t1); s2t1.getCapitulos().add(s2t1c3);
+        serie2.getTemporadas().add(s2t1);
+
+        Temporada s2t2 = new Temporada(); s2t2.setNombreTemporada("Intrusión crítica"); s2t2.setNumeroTemporada(2); s2t2.setDescripcion("El hacker despierta."); s2t2.setSerie(serie2);
+        Capitulo s2t2c1 = new Capitulo(); s2t2c1.setNombreCapitulo("Bóveda comprometida"); s2t2c1.setNumeroCapitulo(1); s2t2c1.setDescripcion("La seguridad colapsa."); s2t2c1.setEnlace("http://video/s2t2c1"); s2t2c1.setTemporada(s2t2); s2t2.getCapitulos().add(s2t2c1);
+        Capitulo s2t2c2 = new Capitulo(); s2t2c2.setNombreCapitulo("La amenaza interna"); s2t2c2.setNumeroCapitulo(2); s2t2c2.setDescripcion("El traidor entre nosotros."); s2t2c2.setEnlace("http://video/s2t2c2"); s2t2c2.setTemporada(s2t2); s2t2.getCapitulos().add(s2t2c2);
+        Capitulo s2t2c3 = new Capitulo(); s2t2c3.setNombreCapitulo("Mentiras dobles"); s2t2c3.setNumeroCapitulo(3); s2t2c3.setDescripcion("Nadie es confiable."); s2t2c3.setEnlace("http://video/s2t2c3"); s2t2c3.setTemporada(s2t2); s2t2.getCapitulos().add(s2t2c3);
+        serie2.getTemporadas().add(s2t2);
+
+        Temporada s2t3 = new Temporada(); s2t3.setNombreTemporada("Contraataque"); s2t3.setNumeroTemporada(3); s2t3.setDescripcion("Cazador digital."); s2t3.setSerie(serie2);
+        Capitulo s2t3c1 = new Capitulo(); s2t3c1.setNombreCapitulo("Datos robados"); s2t3c1.setNumeroCapitulo(1); s2t3c1.setDescripcion("El secreto sale a la luz."); s2t3c1.setEnlace("http://video/s2t3c1"); s2t3c1.setTemporada(s2t3); s2t3.getCapitulos().add(s2t3c1);
+        Capitulo s2t3c2 = new Capitulo(); s2t3c2.setNombreCapitulo("Punto de retorno"); s2t3c2.setNumeroCapitulo(2); s2t3c2.setDescripcion("El punto de no retorno."); s2t3c2.setEnlace("http://video/s2t3c2"); s2t3c2.setTemporada(s2t3); s2t3.getCapitulos().add(s2t3c2);
+        Capitulo s2t3c3 = new Capitulo(); s2t3c3.setNombreCapitulo("Cierre del cerrojo"); s2t3c3.setNumeroCapitulo(3); s2t3c3.setDescripcion("Final definitivo."); s2t3c3.setEnlace("http://video/s2t3c3"); s2t3c3.setTemporada(s2t3); s2t3.getCapitulos().add(s2t3c3);
+        serie2.getTemporadas().add(s2t3);
+
+        serieRepository.save(serie2);
 
         // ==========================================
-        // SERIE 3: GOLD (1 Temp, 1 Cap)
+        // SERIE 3: Tronos de Ceniza
         // ==========================================
         Persona actor3 = new Persona(); actor3.setNombre("Miguel"); actor3.setPrimerApellido("Hernandez"); actor3.setSegundoApellido("Lopez");
         Persona creador3 = new Persona(); creador3.setNombre("Elena"); creador3.setPrimerApellido("Núñez"); creador3.setSegundoApellido("Morales");
         
-        Capitulo s3t1c1 = new Capitulo(); s3t1c1.setNombreCapitulo("Ascenso al dominio"); s3t1c1.setNumeroCapitulo(1); s3t1c1.setDescripcion("Una serie épica de fantasía."); s3t1c1.setEnlace("http://video/s3t1c1");
-        Temporada s3t1 = new Temporada(); s3t1.setNombreTemporada("El Legado de Fuego"); s3t1.setNumeroTemporada(1); s3t1.setDescripcion("Un reino en guerra.");
-        s3t1.getCapitulos().add(s3t1c1); s3t1c1.setTemporada(s3t1);
-        
-        Serie serie3 = new Serie(); serie3.setNombreSerie("Tronos de Ceniza"); serie3.setDescripcion("Saga fantástica llena de intriga."); serie3.setCategoria(CategoriaSerie.GOLD);
-        serie3.getActores().add(actor3); serie3.getCreadores().add(creador3);
-        serie3.getTemporadas().add(s3t1); s3t1.setSerie(serie3);
+        Serie serie3 = new Serie();
+        serie3.setNombreSerie("Tronos de Ceniza");
+        serie3.setDescripcion("Saga fantástica llena de guerras, lealtades y magia.");
+        serie3.setCategoria(CategoriaSerie.GOLD);
+        serie3.getActores().add(actor3);
+        serie3.getCreadores().add(creador3);
+
+        Temporada s3t1 = new Temporada(); s3t1.setNombreTemporada("El legado de fuego"); s3t1.setNumeroTemporada(1); s3t1.setDescripcion("Un reino en guerra."); s3t1.setSerie(serie3);
+        Capitulo s3t1c1 = new Capitulo(); s3t1c1.setNombreCapitulo("Ascenso al dominio"); s3t1c1.setNumeroCapitulo(1); s3t1c1.setDescripcion("Una serie épica de fantasía."); s3t1c1.setEnlace("http://video/s3t1c1"); s3t1c1.setTemporada(s3t1); s3t1.getCapitulos().add(s3t1c1);
+        Capitulo s3t1c2 = new Capitulo(); s3t1c2.setNombreCapitulo("Sombras en el trono"); s3t1c2.setNumeroCapitulo(2); s3t1c2.setDescripcion("Conspiraciones políticas."); s3t1c2.setEnlace("http://video/s3t1c2"); s3t1c2.setTemporada(s3t1); s3t1.getCapitulos().add(s3t1c2);
+        Capitulo s3t1c3 = new Capitulo(); s3t1c3.setNombreCapitulo("Llamas del destino"); s3t1c3.setNumeroCapitulo(3); s3t1c3.setDescripcion("La batalla comienza."); s3t1c3.setEnlace("http://video/s3t1c3"); s3t1c3.setTemporada(s3t1); s3t1.getCapitulos().add(s3t1c3);
+        serie3.getTemporadas().add(s3t1);
+
+        Temporada s3t2 = new Temporada(); s3t2.setNombreTemporada("La traición"); s3t2.setNumeroTemporada(2); s3t2.setDescripcion("La corona en peligro."); s3t2.setSerie(serie3);
+        Capitulo s3t2c1 = new Capitulo(); s3t2c1.setNombreCapitulo("El juramento roto"); s3t2c1.setNumeroCapitulo(1); s3t2c1.setDescripcion("Las alianzas se quiebran."); s3t2c1.setEnlace("http://video/s3t2c1"); s3t2c1.setTemporada(s3t2); s3t2.getCapitulos().add(s3t2c1);
+        Capitulo s3t2c2 = new Capitulo(); s3t2c2.setNombreCapitulo("Cuchillos en la corte"); s3t2c2.setNumeroCapitulo(2); s3t2c2.setDescripcion("Intriga en el poder."); s3t2c2.setEnlace("http://video/s3t2c2"); s3t2c2.setTemporada(s3t2); s3t2.getCapitulos().add(s3t2c2);
+        Capitulo s3t2c3 = new Capitulo(); s3t2c3.setNombreCapitulo("Resurrección de viejos pactos"); s3t2c3.setNumeroCapitulo(3); s3t2c3.setDescripcion("El pasado vuelve."); s3t2c3.setEnlace("http://video/s3t2c3"); s3t2c3.setTemporada(s3t2); s3t2.getCapitulos().add(s3t2c3);
+        serie3.getTemporadas().add(s3t2);
+
+        Temporada s3t3 = new Temporada(); s3t3.setNombreTemporada("El último amanecer"); s3t3.setNumeroTemporada(3); s3t3.setDescripcion("La guerra final."); s3t3.setSerie(serie3);
+        Capitulo s3t3c1 = new Capitulo(); s3t3c1.setNombreCapitulo("Tormenta de acero"); s3t3c1.setNumeroCapitulo(1); s3t3c1.setDescripcion("El combate final."); s3t3c1.setEnlace("http://video/s3t3c1"); s3t3c1.setTemporada(s3t3); s3t3.getCapitulos().add(s3t3c1);
+        Capitulo s3t3c2 = new Capitulo(); s3t3c2.setNombreCapitulo("Reino de ceniza"); s3t3c2.setNumeroCapitulo(2); s3t3c2.setDescripcion("Todo se derrumba."); s3t3c2.setEnlace("http://video/s3t3c2"); s3t3c2.setTemporada(s3t3); s3t3.getCapitulos().add(s3t3c2);
+        Capitulo s3t3c3 = new Capitulo(); s3t3c3.setNombreCapitulo("Renacimiento de los justos"); s3t3c3.setNumeroCapitulo(3); s3t3c3.setDescripcion("Un nuevo comienzo."); s3t3c3.setEnlace("http://video/s3t3c3"); s3t3c3.setTemporada(s3t3); s3t3.getCapitulos().add(s3t3c3);
+        serie3.getTemporadas().add(s3t3);
+
+        serieRepository.save(serie3);
 
         // ==========================================
-        // SERIE 4: ESTÁNDAR (1 Temp, 2 Caps) -> Para probar múltiples capítulos
+        // SERIE 4: Risas de Oficina
         // ==========================================
         Persona actor4 = new Persona(); actor4.setNombre("Roberto"); actor4.setPrimerApellido("García"); actor4.setSegundoApellido("Sanz");
         Persona creador4 = new Persona(); creador4.setNombre("Carmen"); creador4.setPrimerApellido("Velasco"); creador4.setSegundoApellido("Díaz");
         
-        Capitulo s4t1c1 = new Capitulo(); s4t1c1.setNombreCapitulo("El nuevo jefe"); s4t1c1.setNumeroCapitulo(1); s4t1c1.setDescripcion("Día uno en la oficina."); s4t1c1.setEnlace("http://video/s4t1c1");
-        Capitulo s4t1c2 = new Capitulo(); s4t1c2.setNombreCapitulo("Reunión desastrosa"); s4t1c2.setNumeroCapitulo(2); s4t1c2.setDescripcion("Todo sale mal en la presentación."); s4t1c2.setEnlace("http://video/s4t1c2");
-        Temporada s4t1 = new Temporada(); s4t1.setNombreTemporada("Comienzos"); s4t1.setNumeroTemporada(1); s4t1.setDescripcion("Risas garantizadas.");
-        s4t1.getCapitulos().add(s4t1c1); s4t1c1.setTemporada(s4t1);
-        s4t1.getCapitulos().add(s4t1c2); s4t1c2.setTemporada(s4t1);
-        
-        Serie serie4 = new Serie(); serie4.setNombreSerie("Risas de Oficina"); serie4.setDescripcion("Comedia en un entorno laboral."); serie4.setCategoria(CategoriaSerie.ESTANDAR);
-        serie4.getActores().add(actor4); serie4.getCreadores().add(creador4);
-        serie4.getTemporadas().add(s4t1); s4t1.setSerie(serie4);
+        Serie serie4 = new Serie();
+        serie4.setNombreSerie("Risas de Oficina");
+        serie4.setDescripcion("Comedia laboral con situaciones absurdas y personajes entrañables.");
+        serie4.setCategoria(CategoriaSerie.ESTANDAR);
+        serie4.getActores().add(actor4);
+        serie4.getCreadores().add(creador4);
+
+        Temporada s4t1 = new Temporada(); s4t1.setNombreTemporada("Comienzos"); s4t1.setNumeroTemporada(1); s4t1.setDescripcion("Llegada del nuevo equipo."); s4t1.setSerie(serie4);
+        Capitulo s4t1c1 = new Capitulo(); s4t1c1.setNombreCapitulo("El primer día"); s4t1c1.setNumeroCapitulo(1); s4t1c1.setDescripcion("Día uno en la oficina."); s4t1c1.setEnlace("http://video/s4t1c1"); s4t1c1.setTemporada(s4t1); s4t1.getCapitulos().add(s4t1c1);
+        Capitulo s4t1c2 = new Capitulo(); s4t1c2.setNombreCapitulo("Reunión desastrosa"); s4t1c2.setNumeroCapitulo(2); s4t1c2.setDescripcion("Todo sale mal en la presentación."); s4t1c2.setEnlace("http://video/s4t1c2"); s4t1c2.setTemporada(s4t1); s4t1.getCapitulos().add(s4t1c2);
+        Capitulo s4t1c3 = new Capitulo(); s4t1c3.setNombreCapitulo("Tardes de café"); s4t1c3.setNumeroCapitulo(3); s4t1c3.setDescripcion("Charlas en la pausa."); s4t1c3.setEnlace("http://video/s4t1c3"); s4t1c3.setTemporada(s4t1); s4t1.getCapitulos().add(s4t1c3);
+        serie4.getTemporadas().add(s4t1);
+
+        Temporada s4t2 = new Temporada(); s4t2.setNombreTemporada("Crisis de presupuesto"); s4t2.setNumeroTemporada(2); s4t2.setDescripcion("El jefe exige resultados."); s4t2.setSerie(serie4);
+        Capitulo s4t2c1 = new Capitulo(); s4t2c1.setNombreCapitulo("El plan secreto"); s4t2c1.setNumeroCapitulo(1); s4t2c1.setDescripcion("Una estrategia audaz."); s4t2c1.setEnlace("http://video/s4t2c1"); s4t2c1.setTemporada(s4t2); s4t2.getCapitulos().add(s4t2c1);
+        Capitulo s4t2c2 = new Capitulo(); s4t2c2.setNombreCapitulo("La improvisación"); s4t2c2.setNumeroCapitulo(2); s4t2c2.setDescripcion("Sin plan, al improviso."); s4t2c2.setEnlace("http://video/s4t2c2"); s4t2c2.setTemporada(s4t2); s4t2.getCapitulos().add(s4t2c2);
+        Capitulo s4t2c3 = new Capitulo(); s4t2c3.setNombreCapitulo("El informe imposible"); s4t2c3.setNumeroCapitulo(3); s4t2c3.setDescripcion("Números que no cuadran."); s4t2c3.setEnlace("http://video/s4t2c3"); s4t2c3.setTemporada(s4t2); s4t2.getCapitulos().add(s4t2c3);
+        serie4.getTemporadas().add(s4t2);
+
+        Temporada s4t3 = new Temporada(); s4t3.setNombreTemporada("Fiesta de empresa"); s4t3.setNumeroTemporada(3); s4t3.setDescripcion("El regalo equivocado."); s4t3.setSerie(serie4);
+        Capitulo s4t3c1 = new Capitulo(); s4t3c1.setNombreCapitulo("El ascenso inesperado"); s4t3c1.setNumeroCapitulo(1); s4t3c1.setDescripcion("Cambios en la jerarquía."); s4t3c1.setEnlace("http://video/s4t3c1"); s4t3c1.setTemporada(s4t3); s4t3.getCapitulos().add(s4t3c1);
+        Capitulo s4t3c2 = new Capitulo(); s4t3c2.setNombreCapitulo("El cliente difícil"); s4t3c2.setNumeroCapitulo(2); s4t3c2.setDescripcion("Negociación complicada."); s4t3c2.setEnlace("http://video/s4t3c2"); s4t3c2.setTemporada(s4t3); s4t3.getCapitulos().add(s4t3c2);
+        Capitulo s4t3c3 = new Capitulo(); s4t3c3.setNombreCapitulo("La recta final"); s4t3c3.setNumeroCapitulo(3); s4t3c3.setDescripcion("Cierre de temporada."); s4t3c3.setEnlace("http://video/s4t3c3"); s4t3c3.setTemporada(s4t3); s4t3.getCapitulos().add(s4t3c3);
+        serie4.getTemporadas().add(s4t3);
+
+        serieRepository.save(serie4);
 
         // ==========================================
-        // SERIE 5: SILVER (2 Temps, 1 Cap cada una) -> Para probar múltiples temporadas
+        // SERIE 5: Detectives del Pasado
         // ==========================================
         Persona actor5 = new Persona(); actor5.setNombre("Javier"); actor5.setPrimerApellido("Gutiérrez"); actor5.setSegundoApellido("Blanco");
         Persona creador5 = new Persona(); creador5.setNombre("Marta"); creador5.setPrimerApellido("Fernández"); creador5.setSegundoApellido("Rubio");
         
-        Capitulo s5t1c1 = new Capitulo(); s5t1c1.setNombreCapitulo("El caso olvidado"); s5t1c1.setNumeroCapitulo(1); s5t1c1.setDescripcion("Un asesinato sin resolver."); s5t1c1.setEnlace("http://video/s5t1c1");
-        Temporada s5t1 = new Temporada(); s5t1.setNombreTemporada("Misterio en Londres"); s5t1.setNumeroTemporada(1); s5t1.setDescripcion("Investigación inicial.");
-        s5t1.getCapitulos().add(s5t1c1); s5t1c1.setTemporada(s5t1);
-        
-        Capitulo s5t2c1 = new Capitulo(); s5t2c1.setNombreCapitulo("El retorno del asesino"); s5t2c1.setNumeroCapitulo(1); s5t2c1.setDescripcion("Años después, vuelve a atacar."); s5t2c1.setEnlace("http://video/s5t2c1");
-        Temporada s5t2 = new Temporada(); s5t2.setNombreTemporada("La secuela"); s5t2.setNumeroTemporada(2); s5t2.setDescripcion("Investigación final.");
-        s5t2.getCapitulos().add(s5t2c1); s5t2c1.setTemporada(s5t2);
-        
-        Serie serie5 = new Serie(); serie5.setNombreSerie("Detectives del Pasado"); serie5.setDescripcion("Serie policíaca de época."); serie5.setCategoria(CategoriaSerie.SILVER);
-        serie5.getActores().add(actor5); serie5.getCreadores().add(creador5);
-        serie5.getTemporadas().add(s5t1); s5t1.setSerie(serie5);
-        serie5.getTemporadas().add(s5t2); s5t2.setSerie(serie5);
+        Serie serie5 = new Serie();
+        serie5.setNombreSerie("Detectives del Pasado");
+        serie5.setDescripcion("Policías de época persiguen misterios sin resolver.");
+        serie5.setCategoria(CategoriaSerie.SILVER);
+        serie5.getActores().add(actor5);
+        serie5.getCreadores().add(creador5);
+
+        Temporada s5t1 = new Temporada(); s5t1.setNombreTemporada("Misterio en Londres"); s5t1.setNumeroTemporada(1); s5t1.setDescripcion("Investigación inicial."); s5t1.setSerie(serie5);
+        Capitulo s5t1c1 = new Capitulo(); s5t1c1.setNombreCapitulo("El caso olvidado"); s5t1c1.setNumeroCapitulo(1); s5t1c1.setDescripcion("Un asesinato sin resolver."); s5t1c1.setEnlace("http://video/s5t1c1"); s5t1c1.setTemporada(s5t1); s5t1.getCapitulos().add(s5t1c1);
+        Capitulo s5t1c2 = new Capitulo(); s5t1c2.setNombreCapitulo("Sombras en el muelle"); s5t1c2.setNumeroCapitulo(2); s5t1c2.setDescripcion("Pistas en la ciudad."); s5t1c2.setEnlace("http://video/s5t1c2"); s5t1c2.setTemporada(s5t1); s5t1.getCapitulos().add(s5t1c2);
+        Capitulo s5t1c3 = new Capitulo(); s5t1c3.setNombreCapitulo("Voz de la noche"); s5t1c3.setNumeroCapitulo(3); s5t1c3.setDescripcion("Testigos emergen."); s5t1c3.setEnlace("http://video/s5t1c3"); s5t1c3.setTemporada(s5t1); s5t1.getCapitulos().add(s5t1c3);
+        serie5.getTemporadas().add(s5t1);
+
+        Temporada s5t2 = new Temporada(); s5t2.setNombreTemporada("La secuela"); s5t2.setNumeroTemporada(2); s5t2.setDescripcion("Años después."); s5t2.setSerie(serie5);
+        Capitulo s5t2c1 = new Capitulo(); s5t2c1.setNombreCapitulo("El retorno del asesino"); s5t2c1.setNumeroCapitulo(1); s5t2c1.setDescripcion("El peligro vuelve."); s5t2c1.setEnlace("http://video/s5t2c1"); s5t2c1.setTemporada(s5t2); s5t2.getCapitulos().add(s5t2c1);
+        Capitulo s5t2c2 = new Capitulo(); s5t2c2.setNombreCapitulo("Carta anónima"); s5t2c2.setNumeroCapitulo(2); s5t2c2.setDescripcion("Una pista misteriosa."); s5t2c2.setEnlace("http://video/s5t2c2"); s5t2c2.setTemporada(s5t2); s5t2.getCapitulos().add(s5t2c2);
+        Capitulo s5t2c3 = new Capitulo(); s5t2c3.setNombreCapitulo("El entierro secreto"); s5t2c3.setNumeroCapitulo(3); s5t2c3.setDescripcion("La verdad enterrada."); s5t2c3.setEnlace("http://video/s5t2c3"); s5t2c3.setTemporada(s5t2); s5t2.getCapitulos().add(s5t2c3);
+        serie5.getTemporadas().add(s5t2);
+
+        Temporada s5t3 = new Temporada(); s5t3.setNombreTemporada("Última pista"); s5t3.setNumeroTemporada(3); s5t3.setDescripcion("La verdad oculta."); s5t3.setSerie(serie5);
+        Capitulo s5t3c1 = new Capitulo(); s5t3c1.setNombreCapitulo("Testigo perdido"); s5t3c1.setNumeroCapitulo(1); s5t3c1.setDescripcion("Alguien falta."); s5t3c1.setEnlace("http://video/s5t3c1"); s5t3c1.setTemporada(s5t3); s5t3.getCapitulos().add(s5t3c1);
+        Capitulo s5t3c2 = new Capitulo(); s5t3c2.setNombreCapitulo("La emboscada"); s5t3c2.setNumeroCapitulo(2); s5t3c2.setDescripcion("Trampa mortal."); s5t3c2.setEnlace("http://video/s5t3c2"); s5t3c2.setTemporada(s5t3); s5t3.getCapitulos().add(s5t3c2);
+        Capitulo s5t3c3 = new Capitulo(); s5t3c3.setNombreCapitulo("Justicia tardía"); s5t3c3.setNumeroCapitulo(3); s5t3c3.setDescripcion("El final."); s5t3c3.setEnlace("http://video/s5t3c3"); s5t3c3.setTemporada(s5t3); s5t3.getCapitulos().add(s5t3c3);
+        serie5.getTemporadas().add(s5t3);
+
+        serieRepository.save(serie5);
 
         // ==========================================
-        // SERIE 6: GOLD (1 Temp, 1 Cap)
+        // SERIE 6: Héroes de Arena
         // ==========================================
         Persona actor6 = new Persona(); actor6.setNombre("Lucía"); actor6.setPrimerApellido("Martínez"); actor6.setSegundoApellido("Vidal");
         Persona creador6 = new Persona(); creador6.setNombre("Antonio"); creador6.setPrimerApellido("Ruiz"); creador6.setSegundoApellido("García");
         
-        Capitulo s6t1c1 = new Capitulo(); s6t1c1.setNombreCapitulo("El despertar"); s6t1c1.setNumeroCapitulo(1); s6t1c1.setDescripcion("Descubriendo superpoderes."); s6t1c1.setEnlace("http://video/s6t1c1");
-        Temporada s6t1 = new Temporada(); s6t1.setNombreTemporada("Orígenes"); s6t1.setNumeroTemporada(1); s6t1.setDescripcion("El nacimiento de los héroes.");
-        s6t1.getCapitulos().add(s6t1c1); s6t1c1.setTemporada(s6t1);
-        
-        Serie serie6 = new Serie(); serie6.setNombreSerie("Héroes de Arena"); serie6.setDescripcion("Acción y superpoderes."); serie6.setCategoria(CategoriaSerie.GOLD);
-        serie6.getActores().add(actor6); serie6.getCreadores().add(creador6);
-        serie6.getTemporadas().add(s6t1); s6t1.setSerie(serie6);
+        Serie serie6 = new Serie();
+        serie6.setNombreSerie("Héroes de Arena");
+        serie6.setDescripcion("Aventuras de superhéroes en un mundo dividido por el poder.");
+        serie6.setCategoria(CategoriaSerie.GOLD);
+        serie6.getActores().add(actor6);
+        serie6.getCreadores().add(creador6);
 
-        serieRepository.save(serie1);
-        serieRepository.save(serie2);
-        serieRepository.save(serie3);
-        serieRepository.save(serie4);
-        serieRepository.save(serie5);
+        Temporada s6t1 = new Temporada(); s6t1.setNombreTemporada("Orígenes"); s6t1.setNumeroTemporada(1); s6t1.setDescripcion("El despertar."); s6t1.setSerie(serie6);
+        Capitulo s6t1c1 = new Capitulo(); s6t1c1.setNombreCapitulo("La primera prueba"); s6t1c1.setNumeroCapitulo(1); s6t1c1.setDescripcion("El inicio de todo."); s6t1c1.setEnlace("http://video/s6t1c1"); s6t1c1.setTemporada(s6t1); s6t1.getCapitulos().add(s6t1c1);
+        Capitulo s6t1c2 = new Capitulo(); s6t1c2.setNombreCapitulo("Poderes ocultos"); s6t1c2.setNumeroCapitulo(2); s6t1c2.setDescripcion("Descubriendo superpoderes."); s6t1c2.setEnlace("http://video/s6t1c2"); s6t1c2.setTemporada(s6t1); s6t1.getCapitulos().add(s6t1c2);
+        Capitulo s6t1c3 = new Capitulo(); s6t1c3.setNombreCapitulo("El entrenamiento"); s6t1c3.setNumeroCapitulo(3); s6t1c3.setDescripcion("Preparación para la batalla."); s6t1c3.setEnlace("http://video/s6t1c3"); s6t1c3.setTemporada(s6t1); s6t1.getCapitulos().add(s6t1c3);
+        serie6.getTemporadas().add(s6t1);
+
+        Temporada s6t2 = new Temporada(); s6t2.setNombreTemporada("El círculo"); s6t2.setNumeroTemporada(2); s6t2.setDescripcion("Aliados inesperados."); s6t2.setSerie(serie6);
+        Capitulo s6t2c1 = new Capitulo(); s6t2c1.setNombreCapitulo("La amenaza creciente"); s6t2c1.setNumeroCapitulo(1); s6t2c1.setDescripcion("Enemigos se multiplican."); s6t2c1.setEnlace("http://video/s6t2c1"); s6t2c1.setTemporada(s6t2); s6t2.getCapitulos().add(s6t2c1);
+        Capitulo s6t2c2 = new Capitulo(); s6t2c2.setNombreCapitulo("Ruptura de confianza"); s6t2c2.setNumeroCapitulo(2); s6t2c2.setDescripcion("Las alianzas se quiebran."); s6t2c2.setEnlace("http://video/s6t2c2"); s6t2c2.setTemporada(s6t2); s6t2.getCapitulos().add(s6t2c2);
+        Capitulo s6t2c3 = new Capitulo(); s6t2c3.setNombreCapitulo("La caída"); s6t2c3.setNumeroCapitulo(3); s6t2c3.setDescripcion("Todo se derrumba."); s6t2c3.setEnlace("http://video/s6t2c3"); s6t2c3.setTemporada(s6t2); s6t2.getCapitulos().add(s6t2c3);
+        serie6.getTemporadas().add(s6t2);
+
+        Temporada s6t3 = new Temporada(); s6t3.setNombreTemporada("Resurrección"); s6t3.setNumeroTemporada(3); s6t3.setDescripcion("El retorno del peligro."); s6t3.setSerie(serie6);
+        Capitulo s6t3c1 = new Capitulo(); s6t3c1.setNombreCapitulo("Batalla en la arena"); s6t3c1.setNumeroCapitulo(1); s6t3c1.setDescripcion("La batalla final."); s6t3c1.setEnlace("http://video/s6t3c1"); s6t3c1.setTemporada(s6t3); s6t3.getCapitulos().add(s6t3c1);
+        Capitulo s6t3c2 = new Capitulo(); s6t3c2.setNombreCapitulo("El sacrificio"); s6t3c2.setNumeroCapitulo(2); s6t3c2.setDescripcion("Alguien debe caer."); s6t3c2.setEnlace("http://video/s6t3c2"); s6t3c2.setTemporada(s6t3); s6t3.getCapitulos().add(s6t3c2);
+        Capitulo s6t3c3 = new Capitulo(); s6t3c3.setNombreCapitulo("El nuevo amanecer"); s6t3c3.setNumeroCapitulo(3); s6t3c3.setDescripcion("Un nuevo comienzo."); s6t3c3.setEnlace("http://video/s6t3c3"); s6t3c3.setTemporada(s6t3); s6t3.getCapitulos().add(s6t3c3);
+        serie6.getTemporadas().add(s6t3);
+
         serieRepository.save(serie6);
     }
 
@@ -143,7 +244,35 @@ public class DatabaseInitializer implements CommandLineRunner {
 
         if (serieEstandar1 == null || serieSilver2 == null) return; // Seguridad
 
-        String mesActual = "2026-04"; // Mantenemos abril para pruebas consistentes
+        String mesActual = new SimpleDateFormat("yyyy-MM").format(new Date());
+
+        // ==========================================
+        // USUARIO 0: JOHN NIEVE
+        // ==========================================
+        Usuario usuarioJohn = new Usuario(); usuarioJohn.setNombreUsuario("John Nieve"); usuarioJohn.setContraseña("john123"); usuarioJohn.setCuentaBancaria("ES4400190020961234567890"); usuarioJohn.setTipo(TipoSuscripcion.PAGOPORVISUALIZACION);
+        usuarioJohn.getSeriesEmpezadas().add(serieEstandar1);
+        usuarioJohn.getSeriesPendientes().add(serieSilver1);
+        usuarioJohn.getSeriesTerminadas().add(serieGold1);
+        usuarioJohn.getSeriesPendientes().add(serieGold2);
+
+        Factura facturaJohn = new Factura(); facturaJohn.setMes(mesActual); facturaJohn.setUsuario(usuarioJohn);
+        Temporada t1j = serieEstandar1.getTemporadaByNumero(1); Capitulo c1j = t1j.getCapituloByNumero(1);
+        usuarioJohn.getCapitulosVistos().add(c1j);
+
+        Visualizacion vJohn = new Visualizacion(); vJohn.setFechaVisualizacion(new Date()); vJohn.setNumCapitulo(c1j.getNumeroCapitulo()); vJohn.setNumTemporada(t1j.getNumeroTemporada()); vJohn.setSerie(serieEstandar1);
+        facturaJohn.getVisualizaciones().add(vJohn); 
+
+        RegistroSerieUsuario regJohnEmpezada = new RegistroSerieUsuario(); regJohnEmpezada.setUsuario(usuarioJohn); regJohnEmpezada.setSerie(serieEstandar1); regJohnEmpezada.setUltimoCapituloVisto(c1j);
+        usuarioJohn.getRegistros().add(regJohnEmpezada);
+        
+        Temporada t3jGold = serieGold1.getTemporadaByNumero(3); Capitulo c3jGold = t3jGold.getCapituloByNumero(3);
+        usuarioJohn.getCapitulosVistos().add(c3jGold);
+        Visualizacion vJohnGold = new Visualizacion(); vJohnGold.setFechaVisualizacion(new Date()); vJohnGold.setNumCapitulo(c3jGold.getNumeroCapitulo()); vJohnGold.setNumTemporada(t3jGold.getNumeroTemporada()); vJohnGold.setSerie(serieGold1);
+        RegistroSerieUsuario regJohnTerminada = new RegistroSerieUsuario(); regJohnTerminada.setUsuario(usuarioJohn); regJohnTerminada.setSerie(serieGold1); regJohnTerminada.setUltimoCapituloVisto(c3jGold);
+        usuarioJohn.getRegistros().add(regJohnTerminada);
+        facturaJohn.getVisualizaciones().add(vJohnGold); 
+        usuarioJohn.getFacturas().add(facturaJohn);
+        usuarioRepository.save(usuarioJohn); facturaRepository.save(facturaJohn);
 
         // ==========================================
         // USUARIO 1: MARIA (CUOTA FIJA) - Ve Serie Estándar 1

@@ -1,0 +1,18 @@
+import { Component } from '@angular/core';
+import { UserService } from './services/user.service';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent {
+  constructor(public userService: UserService) {}
+  
+  showNotImplemented(): void {
+    alert('Esta funcionalidad no está implementada aún.');
+  }
+}
+
+  
+
