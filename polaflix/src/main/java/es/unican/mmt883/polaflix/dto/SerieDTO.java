@@ -17,25 +17,25 @@ import java.util.Set;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class SerieDTO {
-    @JsonView(Vistas.SerieResumen.class)
+    @JsonView({Vistas.SerieResumen.class, Vistas.UsuarioResumen.class})
     private Long idSerie;
 
-    @JsonView(Vistas.SerieResumen.class)
+    @JsonView({Vistas.SerieResumen.class, Vistas.UsuarioResumen.class})
     @NotBlank(message = "El nombre de la serie no puede estar vacío")
     private String nombreSerie;
 
-    @JsonView(Vistas.SerieCompleto.class)
+    @JsonView({Vistas.SerieResumen.class, Vistas.UsuarioResumen.class})
     @NotBlank(message = "La descripción de la serie no puede estar vacía")
     private String descripcion;
 
-    @JsonView(Vistas.SerieResumen.class)
+    @JsonView({Vistas.SerieResumen.class, Vistas.UsuarioResumen.class})
     @NotNull(message = "La categoría de la serie es obligatoria")
     private CategoriaSerie categoria;
 
-    @JsonView(Vistas.SerieCompleto.class)
+    @JsonView({Vistas.SerieResumen.class, Vistas.UsuarioResumen.class})
     private Set<PersonaDTO> actores;
 
-    @JsonView(Vistas.SerieCompleto.class)
+    @JsonView({Vistas.SerieResumen.class, Vistas.UsuarioResumen.class})
     private Set<PersonaDTO> creadores;
 
     @JsonView(Vistas.SerieCompleto.class)

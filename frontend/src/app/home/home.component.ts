@@ -49,12 +49,24 @@ export class HomeComponent implements OnInit {
 
   private buildRecommendations(): void {
     const takenIds = new Set<number>();
-    this.user?.seriesPendientes?.forEach(serie => serie.idSerie && takenIds.add(serie.idSerie));
-    this.user?.seriesEmpezadas?.forEach(serie => serie.idSerie && takenIds.add(serie.idSerie));
-    this.user?.seriesTerminadas?.forEach(serie => serie.idSerie && takenIds.add(serie.idSerie));
+    this.user?.seriesPendientes?.forEach(serie => {
+      if (serie.idSerie !== undefined && serie.idSerie !== null) {
+        takenIds.add(serie.idSerie);
+      }
+    });
+    this.user?.seriesEmpezadas?.forEach(serie => {
+      if (serie.idSerie !== undefined && serie.idSerie !== null) {
+        takenIds.add(serie.idSerie);
+      }
+    });
+    this.user?.seriesTerminadas?.forEach(serie => {
+      if (serie.idSerie !== undefined && serie.idSerie !== null) {
+        takenIds.add(serie.idSerie);
+      }
+    });
 
     this.recommendations = this.allSeries
-      .filter(serie => serie.idSerie && !takenIds.has(serie.idSerie))
+      .filter(serie => serie.idSerie !== undefined && serie.idSerie !== null && !takenIds.has(serie.idSerie))
       .sort((a, b) => (a.nombreSerie || '').localeCompare(b.nombreSerie || ''));
   }
 
@@ -74,8 +86,13 @@ export class HomeComponent implements OnInit {
       return;
     }
     this.serieService.addSeriePendiente(this.user.idUsuario, serie.idSerie).subscribe({
-      next: () => {
-        this.user!.seriesPendientes = [...(this.user?.seriesPendientes || []), serie];
+      next: user => {
+        this.user = {
+          ...user,
+          seriesPendientes: user.seriesPendientes || [],
+          seriesEmpezadas: user.seriesEmpezadas || [],
+          seriesTerminadas: user.seriesTerminadas || []
+        };
         this.buildRecommendations();
       },
       error: err => {

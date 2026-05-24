@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
-import { SerieDetailComponent } from './serie-detail/serie-detail.component';
-import { SeasonDetailComponent } from './season-detail/season-detail.component';
+import { DetallSerieComponent } from './detalle-serie/detalle-serie.component';
+import { DetalleTemporadaComponent } from './detalle-temporada/detalle-temporada.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
-  { path: 'serie/:id', component: SerieDetailComponent },
-  { path: 'serie/:id/temporada/:season', component: SeasonDetailComponent },
+  { path: 'serie/:id', component: DetallSerieComponent },
+  { path: 'serie/:id/temporada/:season', component: DetalleTemporadaComponent },
   { path: '**', redirectTo: '' }
 ];
 

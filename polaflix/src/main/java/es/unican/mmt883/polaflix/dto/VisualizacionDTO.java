@@ -16,10 +16,10 @@ import java.util.Date;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class VisualizacionDTO {
-    @JsonView(Vistas.VisualizacionResumen.class)
+    @JsonView(Vistas.VisualizacionCompleto.class)
     private Long idVisualizacion;
 
-    @JsonView(Vistas.VisualizacionResumen.class)
+    @JsonView(Vistas.VisualizacionCompleto.class)
     @NotNull(message = "La fecha de visualización es obligatoria")
     private Date fechaVisualizacion;
 
@@ -27,12 +27,12 @@ public class VisualizacionDTO {
     @NotNull(message = "El capítulo es obligatorio")
     private CapituloDTO capitulo;
 
-    @JsonView(Vistas.VisualizacionResumen.class)
+    @JsonView(Vistas.VisualizacionCompleto.class)
     @NotNull(message = "El número de la temporada es obligatorio")
     @Min(value = 1, message = "El número de la temporada debe ser mayor que 0")
     private int numTemporada;
 
-    @JsonView(Vistas.VisualizacionResumen.class)
+    @JsonView(Vistas.VisualizacionCompleto.class)
     @NotNull(message = "El precio cobrado es obligatorio")
     @DecimalMin(value = "0.0", inclusive = true, message = "El precio cobrado debe ser mayor o igual a 0")
     private float precioCobrado;

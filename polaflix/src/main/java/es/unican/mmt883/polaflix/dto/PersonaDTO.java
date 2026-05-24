@@ -11,17 +11,17 @@ import jakarta.validation.constraints.NotBlank;
 @AllArgsConstructor
 public class PersonaDTO {
     
-    @JsonView(Vistas.SerieCompleto.class)
+    @JsonView(Vistas.Public.class)
     private Long id;
     
-    @JsonView(Vistas.SerieCompleto.class)
+    @JsonView(Vistas.Public.class)
     @NotBlank(message = "El nombre de la persona no puede estar vacío")
     private String nombre;
     
-    @JsonView(Vistas.SerieCompleto.class)
+    @JsonView(Vistas.Public.class)
     @NotBlank(message = "El primer apellido es obligatorio")
     private String primerApellido;
     
-    @JsonView(Vistas.SerieCompleto.class)
+    @JsonView(Vistas.Public.class)
     private String segundoApellido;
 }

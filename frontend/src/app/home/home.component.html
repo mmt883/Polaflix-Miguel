@@ -11,7 +11,7 @@
     <div class="panel-card">
       <h3>Series empezadas</h3>
       <p class="panel-note">Continúa viendo las series que ya has empezado.</p>
-      <div *ngIf="user.seriesEmpezadas?.length; else noStarted">
+      <div *ngIf="(user.seriesEmpezadas?.length || 0) > 0; else noStarted">
         <article class="list-card" *ngFor="let serie of user.seriesEmpezadas">
           <div>
             <strong>{{ serie.nombreSerie }}</strong>
@@ -28,7 +28,7 @@
     <div class="panel-card">
       <h3>Series pendientes</h3>
       <p class="panel-note">Guarda series para ver cuando tengas tiempo.</p>
-      <div *ngIf="user.seriesPendientes?.length; else noPending">
+      <div *ngIf="(user.seriesPendientes?.length || 0) > 0; else noPending">
         <article class="list-card" *ngFor="let serie of user.seriesPendientes">
           <div>
             <strong>{{ serie.nombreSerie }}</strong>
@@ -45,7 +45,7 @@
     <div class="panel-card">
       <h3>Series terminadas</h3>
       <p class="panel-note">Tus series completadas para revisar o volver a ver.</p>
-      <div *ngIf="user.seriesTerminadas?.length; else noFinished">
+      <div *ngIf="(user.seriesTerminadas?.length || 0) > 0; else noFinished">
         <article class="list-card" *ngFor="let serie of user.seriesTerminadas">
           <div>
             <strong>{{ serie.nombreSerie }}</strong>
@@ -62,7 +62,7 @@
     <div class="panel-card large-panel">
       <h3>Te podría interesar</h3>
       <p class="panel-note">Series recomendadas basadas en lo que aún no tienes en tu lista.</p>
-      <div *ngIf="recommendations?.length; else noRecommendations">
+      <div *ngIf="(recommendations?.length || 0) > 0; else noRecommendations">
         <article class="list-card" *ngFor="let serie of recommendations">
           <div>
             <strong>{{ serie.nombreSerie }}</strong>

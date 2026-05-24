@@ -6,15 +6,15 @@ import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
-import { SerieDetailComponent } from './serie-detail/serie-detail.component';
-import { SeasonDetailComponent } from './season-detail/season-detail.component';
+import { DetallSerieComponent } from './detalle-serie/detalle-serie.component';
+import { DetalleTemporadaComponent } from './detalle-temporada/detalle-temporada.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    SerieDetailComponent,
-    SeasonDetailComponent
+    DetallSerieComponent,
+    DetalleTemporadaComponent
   ],
   imports: [
     BrowserModule,

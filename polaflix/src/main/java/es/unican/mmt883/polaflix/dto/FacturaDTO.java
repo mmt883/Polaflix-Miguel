@@ -16,21 +16,17 @@ import java.util.Set;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class FacturaDTO {
-    @JsonView(Vistas.FacturaResumen.class)
+    @JsonView(Vistas.FacturaCompleto.class)
     private Long idFactura;
 
-    @JsonView(Vistas.FacturaResumen.class)
+    @JsonView(Vistas.FacturaCompleto.class)
     @NotBlank(message = "El mes de la factura no puede estar vacío")
     private String mes;
 
-    @JsonView(Vistas.FacturaResumen.class)
+    @JsonView(Vistas.FacturaCompleto.class)
     @NotNull(message = "El total de la factura es obligatorio")
     @DecimalMin(value = "0.0", inclusive = false, message = "El total debe ser mayor que 0")
     private Float total;
-
-    @JsonView(Vistas.FacturaCompleto.class)
-    @NotNull(message = "El usuario es obligatorio")
-    private UsuarioDTO usuario;
 
     @JsonView(Vistas.FacturaCompleto.class)
     private Set<VisualizacionDTO> visualizaciones;

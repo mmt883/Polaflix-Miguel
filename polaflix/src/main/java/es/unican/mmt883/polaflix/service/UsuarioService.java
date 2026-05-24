@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UsuarioService {
@@ -65,8 +66,19 @@ public class UsuarioService {
 
     @Transactional(readOnly = true)
     public List<Factura> getFacturas(Long usuarioId) {
+        return getFacturas(usuarioId, null);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Factura> getFacturas(Long usuarioId, String mes) {
         Usuario usuario = usuarioRepository.findById(usuarioId).orElseThrow(() -> new RuntimeException("Usuario not found"));
-        return usuario.getFacturas();
+        List<Factura> facturas = usuario.getFacturas();
+        if (mes == null || mes.isBlank()) {
+            return facturas;
+        }
+        return facturas.stream()
+                .filter(f -> f.getMes() != null && f.getMes().equalsIgnoreCase(mes.trim()))
+                .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)

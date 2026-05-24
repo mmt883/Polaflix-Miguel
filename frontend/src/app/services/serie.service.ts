@@ -5,6 +5,7 @@ import { catchError } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { Serie } from '../models/serie.model';
 import { UserService } from './user.service';
+import { Usuario } from '../models/usuario.model';
 
 @Injectable({
   providedIn: 'root'
@@ -29,12 +30,12 @@ export class SerieService {
     );
   }
 
-  addSeriePendiente(usuarioId: number, serieId: number | undefined): Observable<void> {
+  addSeriePendiente(usuarioId: number, serieId: number | undefined): Observable<Usuario> {
     if (!serieId) {
       return throwError(() => 'Serie inválida.');
     }
     const url = `${environment.apiUrl}/usuarios/${usuarioId}/series-pendientes/${serieId}`;
-    return this.http.post<void>(url, {}).pipe(
+    return this.http.post<Usuario>(url, {}).pipe(
       catchError(this.handleError)
     );
   }

@@ -38,9 +38,13 @@ public class SerieService {
     }
 
     @Transactional(readOnly = true)
-    public Capitulo getCapitulo(Long serieId, int numTemporada, int numCapitulo) {
+    public Temporada getTemporada(Long serieId, int numeroTemporada) {
         Serie serie = serieRepository.findById(serieId).orElseThrow(() -> new RuntimeException("Serie not found"));
-        return serie.encontrarCapituloenTemporada(numCapitulo, numTemporada);
+        Temporada temporada = serie.getTemporadaByNumero(numeroTemporada);
+        if (temporada == null) {
+            throw new RuntimeException("Temporada not found");
+        }
+        return temporada;
     }
 
     @Transactional
