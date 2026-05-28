@@ -52,15 +52,14 @@ export class SerieService {
   }
 
   private handleError(error: HttpErrorResponse) {
+    let message = '';
     if (error.error instanceof ErrorEvent) {
-      return throwError(() => `Error de red: ${error.error.message}`);
+      message = `Error de red: ${error.error.message}`;
+    } else if (error.status === 0) {
+      message = `Error 0, el acceso a las series no ha sido posible, revisa que se este ejecutando la aplicacion correctamente`;
+    } else {
+      message = `Error ${error.status}, el acceso a las series no ha sido posible, revisa que se este ejecutando la aplicacion correctamente`;
     }
-    if (error.status === 0) {
-      return throwError(() => 'No se puede conectar con el servidor. Asegúrate de que el backend está en funcionamiento.');
-    }
-    if (error.status === 404) {
-      return throwError(() => 'No se ha encontrado el recurso solicitado.');
-    }
-    return throwError(() => `Error ${error.status}: ${error.message}`);
+    return throwError(() => new Error(message));
   }
 }

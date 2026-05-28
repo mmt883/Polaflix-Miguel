@@ -1,5 +1,6 @@
 package es.unican.mmt883.polaflix.service;
 
+import es.unican.mmt883.polaflix.exception.ResourceNotFoundException;
 import es.unican.mmt883.polaflix.model.Usuario;
 import es.unican.mmt883.polaflix.model.Serie;
 import es.unican.mmt883.polaflix.model.RegistroSerieUsuario;
@@ -50,17 +51,22 @@ public class UsuarioService {
 
     @Transactional
     public Usuario addSeriePendiente(Long usuarioId, Long serieId) {
-        Usuario usuario = usuarioRepository.findById(usuarioId).orElseThrow(() -> new RuntimeException("Usuario not found"));
-        Serie serie = serieRepository.findById(serieId).orElseThrow(() -> new RuntimeException("Serie not found"));
-        usuario.getSeriesPendientes().add(serie);
+        Usuario usuario = usuarioRepository.findById(usuarioId)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
+        Serie serie = serieRepository.findById(serieId)
+                .orElseThrow(() -> new ResourceNotFoundException("Serie no encontrada"));
+
+        usuario.agregarSerieAPendiente(serie);
         return usuarioRepository.save(usuario);
     }
 
     @Transactional
     public Usuario removeSeriePendiente(Long usuarioId, Long serieId) {
-        Usuario usuario = usuarioRepository.findById(usuarioId).orElseThrow(() -> new RuntimeException("Usuario not found"));
-        Serie serie = serieRepository.findById(serieId).orElseThrow(() -> new RuntimeException("Serie not found"));
-        usuario.getSeriesPendientes().remove(serie);
+        Usuario usuario = usuarioRepository.findById(usuarioId)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
+        Serie serie = serieRepository.findById(serieId)
+                .orElseThrow(() -> new ResourceNotFoundException("Serie no encontrada"));
+        usuario.eliminarSeriePendiente(serie);
         return usuarioRepository.save(usuario);
     }
 
@@ -71,7 +77,8 @@ public class UsuarioService {
 
     @Transactional(readOnly = true)
     public List<Factura> getFacturas(Long usuarioId, String mes) {
-        Usuario usuario = usuarioRepository.findById(usuarioId).orElseThrow(() -> new RuntimeException("Usuario not found"));
+        Usuario usuario = usuarioRepository.findById(usuarioId)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
         List<Factura> facturas = usuario.getFacturas();
         if (mes == null || mes.isBlank()) {
             return facturas;
@@ -83,25 +90,27 @@ public class UsuarioService {
 
     @Transactional(readOnly = true)
     public List<RegistroSerieUsuario> getRegistros(Long usuarioId) {
-        Usuario usuario = usuarioRepository.findById(usuarioId).orElseThrow(() -> new RuntimeException("Usuario not found"));
+        Usuario usuario = usuarioRepository.findById(usuarioId)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
         return usuario.getRegistros();
     }
 
     @Transactional
-    public Usuario marcarCapituloComoVisto(Long usuarioId, Long serieId, int numTemporada, int numCapitulo) {
-        
-        Usuario usuario = usuarioRepository.findById(usuarioId).orElseThrow(() -> new RuntimeException("Usuario not found"));
-        Serie serie = serieRepository.findById(serieId).orElseThrow(() -> new RuntimeException("Serie not found"));
-        
+    public RegistroSerieUsuario marcarCapituloComoVisto(Long usuarioId, Long serieId, int numTemporada, int numCapitulo) {
+        Usuario usuario = usuarioRepository.findById(usuarioId)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
+        Serie serie = serieRepository.findById(serieId)
+                .orElseThrow(() -> new ResourceNotFoundException("Serie no encontrada"));
+
         Capitulo capitulo = serie.encontrarCapituloenTemporada(numCapitulo, numTemporada);
         if (capitulo == null) {
-            throw new RuntimeException("Capitulo not found");
+            throw new ResourceNotFoundException("Capítulo no encontrado");
         }
 
-        usuario.marcarCapituloComoVisto(capitulo);
-
-        return usuarioRepository.save(usuario);
-}
+        RegistroSerieUsuario registro = usuario.marcarCapituloComoVisto(capitulo);
+        usuarioRepository.save(usuario);
+        return registro;
+    }
 }
 
 

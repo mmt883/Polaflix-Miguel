@@ -62,7 +62,7 @@ export class DetalleTemporadaComponent implements OnInit {
           this.loading = false;
         },
         error: err => {
-          this.error = err;
+           this.error = (err instanceof Error) ? err.message : String(err);
           this.loading = false;
         }
       });
@@ -93,7 +93,7 @@ export class DetalleTemporadaComponent implements OnInit {
             : `Capítulo "${capitulo.nombreCapitulo}" marcado como visto.`;
         },
         error: (err: any) => {
-          this.error = err;
+          this.error = (err instanceof Error) ? err.message : String(err);
         }
       });
   }

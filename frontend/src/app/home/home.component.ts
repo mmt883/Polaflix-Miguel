@@ -41,7 +41,7 @@ export class HomeComponent implements OnInit {
         this.loading = false;
       },
       error: err => {
-        this.error = err;
+        this.error = (err instanceof Error) ? err.message : String(err);
         this.loading = false;
       }
     });
@@ -96,7 +96,7 @@ export class HomeComponent implements OnInit {
         this.buildRecommendations();
       },
       error: err => {
-        this.error = err;
+        this.error = (err instanceof Error) ? err.message : String(err);
       }
     });
   }

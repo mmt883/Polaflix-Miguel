@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Persona } from '../models/persona.model';
 import { Serie } from '../models/serie.model';
 import { SerieService } from '../services/serie.service';
 
@@ -35,11 +36,13 @@ export class DetallSerieComponent implements OnInit {
       this.serieService.getSerie(id).subscribe({
         next: value => {
           this.serie = value;
-          this.sortSerieData(value);
+          if (this.serie) {
+            this.sortSerieData(this.serie);
+          }
           this.loading = false;
         },
         error: err => {
-          this.error = err;
+          this.error = (err instanceof Error) ? err.message : String(err);
           this.loading = false;
         }
       });
@@ -57,5 +60,9 @@ export class DetallSerieComponent implements OnInit {
     if (serie.temporadas) {
       serie.temporadas.sort((a, b) => a.numeroTemporada - b.numeroTemporada);
     }
+  }
+
+  formatPersonas(personas: Persona[] | undefined): string {
+    return personas?.map(persona => `${persona.nombre} ${persona.primerApellido}${persona.segundoApellido ? ' ' + persona.segundoApellido : ''}`).join(', ') || 'No especificados';
   }
 }

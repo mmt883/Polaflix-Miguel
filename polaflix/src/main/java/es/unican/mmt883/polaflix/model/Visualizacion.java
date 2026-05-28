@@ -1,5 +1,7 @@
 package es.unican.mmt883.polaflix.model;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import es.unican.mmt883.polaflix.vistas.Vistas;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -17,22 +19,28 @@ import java.util.Date;
 public class Visualizacion {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @JsonView(Vistas.VisualizacionCompleto.class)
     private Long idVisualizacion;
 
     @Column(nullable = false)
+    @JsonView(Vistas.VisualizacionCompleto.class)
     private Date fechaVisualizacion;
 
     @Column(nullable = false)
+    @JsonView(Vistas.VisualizacionCompleto.class)
     private int numCapitulo;
     
     @Column(nullable = false)
+    @JsonView(Vistas.VisualizacionCompleto.class)
     private int numTemporada;
     
     @Column(nullable = false)
+    @JsonView(Vistas.VisualizacionCompleto.class)
     private float precioCobrado;
 
     @ManyToOne
     @JoinColumn(name = "serie_id")
+    @JsonView(Vistas.SerieResumen.class)
     private Serie serie;
 
     @PrePersist

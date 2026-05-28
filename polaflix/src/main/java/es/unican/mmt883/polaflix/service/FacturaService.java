@@ -50,15 +50,15 @@ public class FacturaService {
     @Transactional
     public Factura addVisualizacion(Long facturaId, Visualizacion visualizacion) {
         Factura factura = facturaRepository.findById(facturaId).orElseThrow(() -> new RuntimeException("Factura not found"));
-        // Validar que la serie existe
         if (visualizacion.getSerie() != null && visualizacion.getSerie().getIdSerie() != null) {
             Serie serie = serieRepository.findById(visualizacion.getSerie().getIdSerie()).orElseThrow(() -> new RuntimeException("Serie not found"));
             visualizacion.setSerie(serie);
             float precio = factura.getUsuario().calcularPrecioCobrado(serie);
             visualizacion.setPrecioCobrado(precio);
-            factura.setTotal(factura.getTotal() + precio);
+
+            // Simplemente delegamos al objeto de dominio:
+            factura.addVisualizacion(visualizacion);
         }
-        factura.getVisualizaciones().add(visualizacion);
         return facturaRepository.save(factura);
     }
 
@@ -69,8 +69,9 @@ public class FacturaService {
                 .filter(v -> v.getIdVisualizacion().equals(visualizacionId))
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("Visualizacion not found in factura"));
-        factura.getVisualizaciones().remove(toRemove);
-        factura.setTotal(factura.getTotal() - toRemove.getPrecioCobrado());
+
+        // Delegamos al objeto de dominio:
+        factura.removeVisualizacion(toRemove);
         return facturaRepository.save(factura);
     }
 }

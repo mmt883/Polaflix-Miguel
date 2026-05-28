@@ -1,5 +1,8 @@
 package es.unican.mmt883.polaflix.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
+import es.unican.mmt883.polaflix.vistas.Vistas;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -22,41 +25,64 @@ public class Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @JsonView(Vistas.UsuarioResumen.class)
     private Long idUsuario;
     
     @Column(nullable = false)
+    @JsonView(Vistas.UsuarioResumen.class)
     private String nombreUsuario;
     
     @Column(nullable = false)
+    @JsonIgnore
     private String contraseña;
     
     @Column(nullable = false)
+    @JsonIgnore
     private String cuentaBancaria;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
+    @JsonView(Vistas.UsuarioResumen.class)
     private TipoSuscripcion tipo;
 
     @ManyToMany
+    @JsonView(Vistas.UsuarioResumen.class)
     private Set<Serie> seriesPendientes = new HashSet<>();
 
     @ManyToMany
+    @JsonView(Vistas.UsuarioResumen.class)
     private Set<Serie> seriesTerminadas = new HashSet<>();
 
     @ManyToMany
+    @JsonView(Vistas.UsuarioResumen.class)
     private Set<Serie> seriesEmpezadas = new HashSet<>();
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Factura> facturas = new ArrayList<>();
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<RegistroSerieUsuario> registros = new ArrayList<>();
 
     @ManyToMany
+    @JsonView(Vistas.UsuarioResumen.class)
     private Set<Capitulo> capitulosVistos = new HashSet<>();
 
     public void agregarSerieAPendiente(Serie s) {
+
+        if (seriesEmpezadas.contains(s)) {
+            throw new IllegalArgumentException("La serie ya está empezada");
+        }
+        if (seriesTerminadas.contains(s)) {
+            throw new IllegalArgumentException("La serie ya está terminada");
+        }
+
         seriesPendientes.add(s);
+    }
+
+    public void eliminarSeriePendiente(Serie s) {
+        this.seriesPendientes.remove(s);
     }
 
     public Factura comprobarFacturaActual() {
@@ -73,7 +99,10 @@ public class Usuario {
         return null;
     }
 
-    public boolean marcarCapituloComoVisto(Capitulo c) {
+    public RegistroSerieUsuario marcarCapituloComoVisto(Capitulo c) {
+        if (capitulosVistos.contains(c)) {
+            throw new IllegalArgumentException("El capítulo ya está marcado como visto");
+        }
         capitulosVistos.add(c);
         Serie serie = c.getTemporada().getSerie();
         float precio = calcularPrecioCobrado(serie);
@@ -133,7 +162,7 @@ public class Usuario {
             }
             seriesTerminadas.add(serie);
         }
-        return true;
+        return reg;
     }
 
     public float calcularPrecioCobrado(Serie serie) {

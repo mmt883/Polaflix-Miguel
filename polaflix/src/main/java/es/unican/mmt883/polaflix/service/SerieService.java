@@ -50,20 +50,14 @@ public class SerieService {
     @Transactional
     public Serie addTemporada(Long serieId, Temporada temporada) {
         Serie serie = serieRepository.findById(serieId).orElseThrow(() -> new RuntimeException("Serie not found"));
-        temporada.setSerie(serie);
-        serie.getTemporadas().add(temporada);
+        serie.addTemporada(temporada);
         return serieRepository.save(serie);
     }
 
     @Transactional
     public Serie addCapituloToTemporada(Long serieId, int numTemporada, Capitulo capitulo) {
         Serie serie = serieRepository.findById(serieId).orElseThrow(() -> new RuntimeException("Serie not found"));
-        Temporada temporada = serie.getTemporadaByNumero(numTemporada);
-        if (temporada == null) {
-            throw new RuntimeException("Temporada not found");
-        }
-        capitulo.setTemporada(temporada);
-        temporada.getCapitulos().add(capitulo);
+        serie.addCapituloToTemporada(numTemporada, capitulo);
         return serieRepository.save(serie);
     }
 }

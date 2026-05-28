@@ -3,6 +3,8 @@
     <div>
       <h2 class="page-title">{{ serie.nombreSerie }}</h2>
       <p class="card-text">{{ serie.descripcion }}</p>
+      <p class="card-meta"><strong>Creadores:</strong> {{ formatPersonas(serie.creadores) }}</p>
+      <p class="card-meta"><strong>Actores:</strong> {{ formatPersonas(serie.actores) }}</p>
       <div class="chip">Categoría: {{ serie.categoria }}</div>
     </div>
     <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
@@ -10,7 +12,7 @@
     </div>
   </div>
 
-  <div class="content-grid" *ngIf="serie.temporadas?.length; else noSeasons">
+  <div class="content-grid" *ngIf="serie.temporadas?.length; else noSeasons" style="margin-top:18px;">
     <article class="card" *ngFor="let temporada of serie.temporadas">
       <div class="card-body">
         <h3 class="card-title">Temporada {{ temporada.numeroTemporada }} - {{ temporada.nombreTemporada }}</h3>
