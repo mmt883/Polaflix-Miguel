@@ -1,0 +1,40 @@
+.panel-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px;
+  border-radius: 16px;
+  border: 1px solid #e5e7eb;
+  background: rgba(15, 23, 42, 0.9);
+}
+
+.group-title {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #1d4ed8;
+}
+
+.series-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 14px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.series-item:hover {
+  background-color: rgba(22, 30, 51, 0.9);
+}
+
+.serie-name {
+  color: #1d4ed8;
+  font-weight: 600;
+}
+
+.empty-state {
+  color: #6b7280;
+  font-size: 0.95rem;
+  font-style: italic;
+  margin: 0;
+}

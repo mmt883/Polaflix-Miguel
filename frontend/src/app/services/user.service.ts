@@ -33,12 +33,18 @@ export class UserService {
     if (error.error instanceof ErrorEvent) {
       return throwError(() => `Error de red: ${error.error.message}`);
     }
-    if (error.status === 0) {
-      return throwError(() => 'No se puede conectar con el servidor. Asegúrate de que el backend está en funcionamiento.');
+
+    switch (error.status) {
+      case 0:
+        return throwError(() => 'No se puede conectar con el servidor. Asegúrate de que el backend está en funcionamiento.');
+      case 404:
+        return throwError(() => 'No se ha encontrado el usuario solicitado.');
+      case 400:
+        return throwError(() => 'Solicitud inválida. Revisa los datos de usuario.' );
+      case 500:
+        return throwError(() => 'Error interno del servidor. Intenta cargar el usuario más tarde.');
+      default:
+        return throwError(() => `Error ${error.status}: ${error.message}`);
     }
-    if (error.status === 404) {
-      return throwError(() => 'No se ha encontrado el usuario solicitado.');
-    }
-    return throwError(() => `Error ${error.status}: ${error.message}`);
   }
 }

@@ -32,11 +32,24 @@ button {
 
 header {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  border-bottom: 2px solid #333;
+  padding: 10px 20px;
+}
+
+.header-top {
+  display: flex;
   align-items: center;
-  gap: 16px;
-  padding-bottom: 24px;
-  border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+  justify-content: space-between;
+  position: relative;
+  padding-bottom: 10px;
+}
+
+.header-bottom {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-top: 10px;
 }
 
 .brand {
@@ -51,28 +64,39 @@ header {
   border-radius: 18px;
   display: grid;
   place-items: center;
-  background: linear-gradient(135deg, #2563eb, #4f46e5);
+  background: #ffffff;
   box-shadow: 0 18px 40px rgba(15, 23, 42, 0.18);
 }
 
 .brand-mark span {
-  font-size: 1.4rem;
-  font-weight: 800;
-  color: #fff;
+  font-size: 3rem;
+  font-weight: 900;
+  color: #020617;
+  line-height: 1;
 }
 
 .brand-title {
-  line-height: 1.1;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .brand-title h1 {
   margin: 0;
-  font-size: clamp(1.9rem, 2.5vw, 2.6rem);
+  font-size: 2rem;
+  font-weight: normal;
 }
 
 .brand-title p {
   margin: 6px 0 0;
   color: #94a3b8;
+}
+
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.5rem;
 }
 
 .nav-links {
@@ -82,14 +106,19 @@ header {
   flex-wrap: wrap;
 }
 
-.nav-button {
-  border: 1px solid rgba(148, 163, 184, 0.25);
-  background: rgba(15, 23, 42, 0.8);
-  color: #cbd5e1;
-  padding: 10px 18px;
-  border-radius: 14px;
-  transition: transform 0.2s ease, background 0.2s ease;
+.nav-link {
+  color: #00a8e8; /* Azul estilo mockup */
+  text-decoration: underline;
+  font-weight: bold;
 }
+
+.divider {
+  color: #333;
+}
+
+.user-avatar {
+  font-size: 4rem;
+} 
 
 .nav-button:hover {
   transform: translateY(-1px);
@@ -175,17 +204,6 @@ header {
 .primary-button:hover,
 .secondary-button:hover {
   transform: translateY(-1px);
-}
-
-.chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 12px;
-  border-radius: 999px;
-  background: rgba(59, 130, 246, 0.12);
-  color: #bfdbfe;
-  font-size: 0.92rem;
 }
 
 .status-chip {

@@ -1,37 +1,55 @@
-<section class="section-card" *ngIf="!loading && serie">
-  <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; flex-wrap: wrap;">
-    <div>
-      <h2 class="page-title">{{ serie.nombreSerie }}</h2>
-      <p class="card-text">{{ serie.descripcion }}</p>
-      <p class="card-meta"><strong>Creadores:</strong> {{ formatPersonas(serie.creadores) }}</p>
-      <p class="card-meta"><strong>Actores:</strong> {{ formatPersonas(serie.actores) }}</p>
-      <div class="chip">Categoría: {{ serie.categoria }}</div>
+<section class="section-card" *ngIf="!loading && serie && currentSeason">
+  <div class="season-header">
+    <button class="arrow-button" (click)="previousSeason()" [disabled]="currentSeasonIndex === 0">
+      &#9664; </button>
+    
+    <div class="season-title">
+      <h2>{{ serie.nombreSerie }} - Temporada {{ currentSeason.numeroTemporada }}</h2>
     </div>
-    <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
-      <span class="chip">Temporadas: {{ serie.temporadas?.length || 0 }}</span>
+    
+    <button class="arrow-button" (click)="nextSeason()" [disabled]="currentSeasonIndex === (serie.temporadas?.length || 0) - 1">
+      &#9654; </button>
+
+    <div class="category-badge">
+      <span>{{ serie.categoria }}</span>
     </div>
   </div>
 
-  <div class="content-grid" *ngIf="serie.temporadas?.length; else noSeasons" style="margin-top:18px;">
-    <article class="card" *ngFor="let temporada of serie.temporadas">
-      <div class="card-body">
-        <h3 class="card-title">Temporada {{ temporada.numeroTemporada }} - {{ temporada.nombreTemporada }}</h3>
-        <p class="card-meta">{{ temporada.descripcion || 'Descubre todos los capítulos disponibles.' }}</p>
-        <p class="card-text">Capítulos: {{ temporada.capitulos?.length || 0 }}</p>
+  <div *ngIf="infoMessage" class="info-message">{{ infoMessage }}</div>
+  <div *ngIf="error" class="alert">{{ error }}</div>
+
+  <div *ngIf="currentSeason.capitulos?.length; else noEpisodes" class="episodes-list">
+    <div *ngFor="let capitulo of currentSeason.capitulos" class="episode-item">
+      
+      <div class="episode-title-section">
+        <h3 class="episode-title" (click)="toggleDescription(capitulo.idCapitulo)">
+          E{{ capitulo.numeroCapitulo }}. {{ capitulo.nombreCapitulo }}
+        </h3>
+        
+        <div class="episode-actions">
+          <a href="#" class="link-ver" (click)="markAsWatched(capitulo); $event.preventDefault()" [style.pointer-events]="hasWatched(capitulo.idCapitulo) ? 'none' : 'auto'">
+            Ver
+          </a>
+          <span class="episode-status" [class.seen]="hasWatched(capitulo.idCapitulo)" [class.pending]="!hasWatched(capitulo.idCapitulo)">
+            {{ hasWatched(capitulo.idCapitulo) ? 'Visto' : 'Pendiente' }}
+          </span>
+        </div>
       </div>
-      <div class="card-body">
-        <button class="primary-button" (click)="openSeason(temporada.numeroTemporada)">Abrir temporada</button>
+
+      <div class="episode-description" *ngIf="isDescriptionExpanded(capitulo.idCapitulo)">
+        <p>{{ capitulo.descripcion || 'Sin descripción disponible.' }}</p>
+        <button class="close-description-btn" (click)="toggleDescription(capitulo.idCapitulo)">
+          &times;
+        </button>
       </div>
-    </article>
+      
+    </div>
   </div>
 
-  <ng-template #noSeasons>
-    <div class="alert">Esta serie no tiene temporadas disponibles por el momento.</div>
+  <ng-template #noEpisodes>
+    <div class="alert">No hay episodios disponibles en esta temporada.</div>
   </ng-template>
-
-  <div class="alert" *ngIf="error" style="background: rgba(248, 113, 113, 0.15); border-color: rgba(248, 113, 113, 0.25); color: #fecaca;">
-    {{ error }}
-  </div>
 </section>
 
-<div class="loading" *ngIf="loading">Cargando detalles de la serie...</div>
+<div class="loading" *ngIf="loading">Cargando temporada...</div>
+<div class="alert" *ngIf="!loading && error && !serie">{{ error }}</div>

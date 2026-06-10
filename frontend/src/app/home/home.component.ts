@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { forkJoin } from 'rxjs';
 import { Router } from '@angular/router';
 import { Serie } from '../models/serie.model';
 import { Usuario } from '../models/usuario.model';
-import { SerieService } from '../services/serie.service';
 import { UserService } from '../services/user.service';
 
 @Component({
@@ -13,31 +11,23 @@ import { UserService } from '../services/user.service';
 })
 export class HomeComponent implements OnInit {
   user: Usuario | null = null;
-  allSeries: Serie[] = [];
-  recommendations: Serie[] = [];
   loading = true;
   error = '';
 
   constructor(
-    private serieService: SerieService,
     private userService: UserService,
     private router: Router
   ) { }
 
   ngOnInit(): void {
-    forkJoin({
-      user: this.userService.getCurrentUser(),
-      series: this.serieService.getSeries()
-    }).subscribe({
-      next: ({ user, series }) => {
+    this.userService.getCurrentUser().subscribe({
+      next: user => {
         this.user = {
           ...user,
           seriesPendientes: user.seriesPendientes || [],
           seriesEmpezadas: user.seriesEmpezadas || [],
           seriesTerminadas: user.seriesTerminadas || []
         };
-        this.allSeries = series;
-        this.buildRecommendations();
         this.loading = false;
       },
       error: err => {
@@ -45,29 +35,6 @@ export class HomeComponent implements OnInit {
         this.loading = false;
       }
     });
-  }
-
-  private buildRecommendations(): void {
-    const takenIds = new Set<number>();
-    this.user?.seriesPendientes?.forEach(serie => {
-      if (serie.idSerie !== undefined && serie.idSerie !== null) {
-        takenIds.add(serie.idSerie);
-      }
-    });
-    this.user?.seriesEmpezadas?.forEach(serie => {
-      if (serie.idSerie !== undefined && serie.idSerie !== null) {
-        takenIds.add(serie.idSerie);
-      }
-    });
-    this.user?.seriesTerminadas?.forEach(serie => {
-      if (serie.idSerie !== undefined && serie.idSerie !== null) {
-        takenIds.add(serie.idSerie);
-      }
-    });
-
-    this.recommendations = this.allSeries
-      .filter(serie => serie.idSerie !== undefined && serie.idSerie !== null && !takenIds.has(serie.idSerie))
-      .sort((a, b) => (a.nombreSerie || '').localeCompare(b.nombreSerie || ''));
   }
 
   getUsername(): string {
@@ -76,28 +43,9 @@ export class HomeComponent implements OnInit {
 
   openSerie(id: number | undefined): void {
     if (!id) {
+      this.error = 'No se ha encontrado la serie solicitada.';
       return;
     }
     this.router.navigate(['/serie', id]);
-  }
-
-  addToPending(serie: Serie): void {
-    if (!this.user || !serie.idSerie) {
-      return;
-    }
-    this.serieService.addSeriePendiente(this.user.idUsuario, serie.idSerie).subscribe({
-      next: user => {
-        this.user = {
-          ...user,
-          seriesPendientes: user.seriesPendientes || [],
-          seriesEmpezadas: user.seriesEmpezadas || [],
-          seriesTerminadas: user.seriesTerminadas || []
-        };
-        this.buildRecommendations();
-      },
-      error: err => {
-        this.error = (err instanceof Error) ? err.message : String(err);
-      }
-    });
   }
 }

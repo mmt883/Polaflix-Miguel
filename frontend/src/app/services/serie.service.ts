@@ -52,14 +52,29 @@ export class SerieService {
   }
 
   private handleError(error: HttpErrorResponse) {
-    let message = '';
+    let message = 'Se ha producido un error desconocido al acceder a los datos de la serie.';
+
     if (error.error instanceof ErrorEvent) {
       message = `Error de red: ${error.error.message}`;
-    } else if (error.status === 0) {
-      message = `Error 0, el acceso a las series no ha sido posible, revisa que se este ejecutando la aplicacion correctamente`;
     } else {
-      message = `Error ${error.status}, el acceso a las series no ha sido posible, revisa que se este ejecutando la aplicacion correctamente`;
+      switch (error.status) {
+        case 0:
+          message = 'No se puede conectar con el servidor. Comprueba que el backend está en ejecución.';
+          break;
+        case 400:
+          message = 'Solicitud inválida. Revisa los datos enviados.';
+          break;
+        case 404:
+          message = 'No se ha encontrado la serie o el recurso solicitado.';
+          break;
+        case 500:
+          message = 'Error interno del servidor. Vuelve a intentarlo más tarde.';
+          break;
+        default:
+          message = `Error ${error.status}: ${error.error?.mensaje || error.message || 'Ha ocurrido un error.'}`;
+      }
     }
+
     return throwError(() => new Error(message));
   }
 }

@@ -1,17 +1,25 @@
 <div class="app-shell">
   <header>
-    <div class="brand">
-      <div class="brand-mark"><span>P</span></div>
+    <div class="header-top">
+      <div class="brand-logo">
+        <div class="brand-mark"><span>P</span></div>
+      </div>
+      
       <div class="brand-title">
-        <h1>Polaflix</h1>
-        <p>Tu plataforma de series inteligente.</p>
+        <h1>Bienvenido {{ userService.getUsername() }}</h1>
+      </div>
+      
+      <div class="user-avatar">
+        <span>👨‍🦲</span>
       </div>
     </div>
-    <div class="nav-links">
-      <span class="chip">Bienvenido, {{ userService.getUsername() }}</span>
-      <a class="nav-button" routerLink="/">Inicio</a>
-      <a class="nav-button" (click)="showNotImplemented()"> Agregar serie</a>
-      <a class="nav-button" (click)="showNotImplemented()"> Ver cargos</a>
+
+    <div class="header-bottom">
+      <a routerLink="/" class="nav-link">Inicio</a>
+      <span class="divider">|</span>
+      <a class="nav-link">Agregar Serie</a>
+      <span class="divider">|</span>
+      <a class="nav-link">Ver Cargos</a>
     </div>
   </header>
 

@@ -8,10 +8,6 @@ import { UserService } from './services/user.service';
 })
 export class AppComponent {
   constructor(public userService: UserService) {}
-  
-  showNotImplemented(): void {
-    alert('Esta funcionalidad no está implementada aún.');
-  }
 }
 
   

@@ -1,0 +1,13 @@
+<div class="panel-card">
+  <h3 class="group-title">{{ title }}</h3>
+
+  <div *ngIf="series?.length; else emptyState">
+    <div class="series-item" *ngFor="let serie of series" (click)="handleSeriesSelection(serie.idSerie)">
+      <span class="serie-name">{{ serie.nombreSerie }}</span>
+    </div>
+  </div>
+
+  <ng-template #emptyState>
+    <p class="empty-state">{{ emptyMessage }}</p>
+  </ng-template>
+</div>
