@@ -23,6 +23,10 @@
     </div>
   </header>
 
+  <div *ngIf="errorMessage" class="alert">
+    {{ errorMessage }}
+  </div>
+
   <main>
     <router-outlet></router-outlet>
   </main>

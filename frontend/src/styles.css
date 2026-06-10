@@ -230,9 +230,9 @@ header {
   margin-top: 18px;
   padding: 16px 18px;
   border-radius: 18px;
-  background: rgba(16, 185, 129, 0.12);
-  border: 1px solid rgba(16, 185, 129, 0.26);
-  color: #d1fae5;
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.26);
+  color: #fecaca;
 }
 
 .loading {
