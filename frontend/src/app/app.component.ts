@@ -8,7 +8,10 @@ import { UserService } from './services/user.service';
 })
 export class AppComponent {
   constructor(public userService: UserService) {}
-}
 
-  
+  throwNotImplemented(event: Event, feature: string): void {
+    event.preventDefault();
+    throw new Error(`La función "${feature}" no está implementada.`);
+  }
+}
 
